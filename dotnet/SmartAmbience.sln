@@ -1,0 +1,70 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4130D21C-FE8F-4925-93E7-217B4AF1B7D9}"
+	ProjectSection(SolutionItems) = preProject
+		..\readme.md = ..\readme.md
+		SmartAmbience.nuspec = SmartAmbience.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EFB5135D-039A-4D92-8FDD-9EA5D070F991}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "targets", "targets", "{24674244-E4CB-4D13-A513-2F24C3FB13AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C5272353-539E-4138-93FD-9DF437F6DA47}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience", "src\SmartAmbience.shproj", "{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience-net5.0", "lib-net5.0\SmartAmbience-net5.0.csproj", "{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience-net461", "lib-net461\SmartAmbience-net461.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
+EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "SmartAmbienceTests-net6.0", "test\SmartAmbienceTests-net6.0.vbproj", "{239DC2AD-71E1-419B-83DF-8212904F090D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience-net6.0", "lib-net6.0\SmartAmbience-net6.0.csproj", "{FA5ADB71-CA2D-4293-B22F-47E009980CF6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{239DC2AD-71E1-419B-83DF-8212904F090D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{239DC2AD-71E1-419B-83DF-8212904F090D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{239DC2AD-71E1-419B-83DF-8212904F090D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{239DC2AD-71E1-419B-83DF-8212904F090D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA5ADB71-CA2D-4293-B22F-47E009980CF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA5ADB71-CA2D-4293-B22F-47E009980CF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA5ADB71-CA2D-4293-B22F-47E009980CF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA5ADB71-CA2D-4293-B22F-47E009980CF6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{24674244-E4CB-4D13-A513-2F24C3FB13AD} = {EFB5135D-039A-4D92-8FDD-9EA5D070F991}
+		{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE} = {EFB5135D-039A-4D92-8FDD-9EA5D070F991}
+		{80A3546E-C58E-4664-8C5B-1196F3A2C4F9} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
+		{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
+		{239DC2AD-71E1-419B-83DF-8212904F090D} = {C5272353-539E-4138-93FD-9DF437F6DA47}
+		{FA5ADB71-CA2D-4293-B22F-47E009980CF6} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D2F37C1D-32F0-4BF2-AAEB-46B9D8C07D23}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\SmartAmbience.projitems*{80a3546e-c58e-4664-8c5b-1196f3a2c4f9}*SharedItemsImports = 5
+		src\SmartAmbience.projitems*{b0ba06fe-6437-4b9e-8c76-3adfc8d191d2}*SharedItemsImports = 4
+		src\SmartAmbience.projitems*{fa5adb71-ca2d-4293-b22f-47e009980cf6}*SharedItemsImports = 5
+	EndGlobalSection
+EndGlobal
