@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>SmartAmbience</AssemblyName>
-    <RootNamespace>Ambience</RootNamespace>
+    <RootNamespace>System</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   
@@ -13,10 +13,10 @@
     <Product>SmartAmbience</Product>
     <Company>(public domain)</Company>
     <Copyright>SmartStandards</Copyright>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <Authors>SmartStandards</Authors>
-    <FileVersion>1.0.0.0</FileVersion>
+    <FileVersion>1.1.0.0</FileVersion>
     <PackageTags>Ambience AsyncLocal Context Scopes</PackageTags>
     <PackageProjectUrl>https://github.com/SmartStandards/SmartAmbience</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SmartStandards/SmartAmbience</RepositoryUrl>

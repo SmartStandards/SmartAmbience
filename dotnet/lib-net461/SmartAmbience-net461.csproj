@@ -7,7 +7,7 @@
     <ProjectGuid>{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ambience</RootNamespace>
+    <RootNamespace>System</RootNamespace>
     <AssemblyName>SmartAmbience</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -49,6 +49,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\src\SmartAmbience.projitems" Label="Shared" />

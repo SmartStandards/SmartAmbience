@@ -9,10 +9,11 @@
     <Import_RootNamespace>System</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AmbientImmutableStringProxy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AmbientImmutableStringProxyExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IAmbienceToAnyContextadapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\PriorityList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceHub.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceToAppDomainAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\IAmbienceToSomeContextAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\ThreadUtility.cs" />
   </ItemGroup>
 </Project>

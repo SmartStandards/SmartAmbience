@@ -1,12 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Ambience</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>System</RootNamespace>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <AssemblyName>SmartAmbienceTests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\lib-net5.0\SmartAmbience-net5.0.csproj" />
+    <ProjectReference Include="..\..\lib-net6.0\SmartAmbience-net6.0.csproj" />
   </ItemGroup>
 
 </Project>
