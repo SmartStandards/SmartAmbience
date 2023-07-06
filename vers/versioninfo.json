@@ -1,0 +1,13 @@
+{
+  "currentVersion": "1.0.0",
+  "currentVersionWithSuffix": "1.0.0",
+  "releaseType": "official",
+  "previousVersion": "0.0.0",
+  "changeGrade": "patch",
+  "currentMajor": 1,
+  "currentMinor": 0,
+  "currentPatch": 0,
+  "versionDateInfo": "2023-07-06",
+  "versionTimeInfo": "05:43:44",
+  "versionNotes": "- added AmbienceHub in order to support Distributed Data Flow (**MVP** state now reached)\n- Reorganized solution structure to be compliant to our standards\n"
+}

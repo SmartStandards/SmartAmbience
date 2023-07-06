@@ -8,6 +8,12 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
+*(none)*
+
+
+
+## v 1.0.0
+released **2023-07-06**, including:
  - added AmbienceHub in order to support Distributed Data Flow (**MVP** state now reached)
  - Reorganized solution structure to be compliant to our standards
 
