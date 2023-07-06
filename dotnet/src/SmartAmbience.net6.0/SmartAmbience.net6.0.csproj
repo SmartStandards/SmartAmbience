@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>SmartAmbience</AssemblyName>
     <RootNamespace>System</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -13,31 +13,31 @@
     <Product>SmartAmbience</Product>
     <Company>(public domain)</Company>
     <Copyright>SmartStandards</Copyright>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Version>999.0.0</Version>
+    <AssemblyVersion>999.0.0.0</AssemblyVersion>
     <Authors>SmartStandards</Authors>
-    <FileVersion>1.1.0.0</FileVersion>
+    <FileVersion>999.0.0.0</FileVersion>
     <PackageTags>Ambience AsyncLocal Context Scopes</PackageTags>
     <PackageProjectUrl>https://github.com/SmartStandards/SmartAmbience</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SmartStandards/SmartAmbience</RepositoryUrl>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\dist\bin-net5.0\SmartAmbience.xml</DocumentationFile>
-    <OutputPath>..\dist\bin-net5.0\</OutputPath>
+    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.xml</DocumentationFile>
+    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>TRACE;DEBUG;NET5</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\dist\bin-net5.0\</OutputPath>
-    <DocumentationFile>..\dist\bin-net5.0\SmartAmbience.xml</DocumentationFile>
+    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
+    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.xml</DocumentationFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>TRACE;NET5</DefineConstants>
   </PropertyGroup>
 
-  <Import Project="..\src\SmartAmbience.projitems" Label="Shared" />
+  <Import Project="..\SmartAmbience\SmartAmbience.projitems" Label="Shared" />
 
 </Project>

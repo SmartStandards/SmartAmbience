@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>SmartAmbience</id>
-    <version>1.1.0-localbuild</version>
+    <version>999.0.0-localbuild</version>
     <title>SmartAmbience</title>
     <authors>SmartStandards</authors>
     <owners>(public domain)</owners>
     <copyright>SmartStandards</copyright>
     <description>base functionality for ambient framework design</description>
-    <tags>Ambience AsyncLocal Context Scopes</tags>
+    <tags>Ambience AsyncLocal AmbientFields Context Scopes Flowing</tags>
     <!-- https://spdx.org/licenses/ -->
     <license type="expression">GPL-3.0-only</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

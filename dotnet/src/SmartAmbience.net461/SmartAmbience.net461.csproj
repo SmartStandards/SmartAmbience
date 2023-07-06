@@ -18,21 +18,21 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\dist\bin-net46\</OutputPath>
+    <OutputPath>..\..\dist\bin-net46\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\dist\bin-net46\SmartAmbience.xml</DocumentationFile>
+    <DocumentationFile>..\..\dist\bin-net46\SmartAmbience.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\dist\bin-net46\</OutputPath>
+    <OutputPath>..\..\dist\bin-net46\</OutputPath>
     <DefineConstants>TRACE;NET46</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\dist\bin-net46\SmartAmbience.xml</DocumentationFile>
+    <DocumentationFile>..\..\dist\bin-net46\SmartAmbience.xml</DocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -49,11 +49,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\.editorconfig">
+    <None Include="..\..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <Import Project="..\src\SmartAmbience.projitems" Label="Shared" />
+  <Import Project="..\SmartAmbience\SmartAmbience.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

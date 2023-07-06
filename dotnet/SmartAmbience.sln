@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4130D21C-FE8F-4925-93E7-217B4AF1B7D9}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\vers\changelog.md = ..\vers\changelog.md
 		..\readme.md = ..\readme.md
 		SmartAmbience.nuspec = SmartAmbience.nuspec
 	EndProjectSection
@@ -16,15 +17,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "targets", "targets", "{2467
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C5272353-539E-4138-93FD-9DF437F6DA47}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience", "src\SmartAmbience.shproj", "{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience", "src\SmartAmbience\SmartAmbience.shproj", "{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience-net5.0", "lib-net5.0\SmartAmbience-net5.0.csproj", "{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.net5.0", "src\SmartAmbience.net5.0\SmartAmbience.net5.0.csproj", "{80A3546E-C58E-4664-8C5B-1196F3A2C4F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience-net461", "lib-net461\SmartAmbience-net461.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net461", "src\SmartAmbience.net461\SmartAmbience.net461.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience-net6.0", "lib-net6.0\SmartAmbience-net6.0.csproj", "{FA5ADB71-CA2D-4293-B22F-47E009980CF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.net6.0", "src\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj", "{FA5ADB71-CA2D-4293-B22F-47E009980CF6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.Tests-net6.0", "test\SmartAmbience.Tests-net6.0\SmartAmbience.Tests-net6.0.csproj", "{D14C918F-D88A-4CF7-AAB3-5FEA31099F3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.Tests", "test\SmartAmbience.Tests\SmartAmbience.Tests.csproj", "{D14C918F-D88A-4CF7-AAB3-5FEA31099F3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,9 +65,9 @@ Global
 		SolutionGuid = {D2F37C1D-32F0-4BF2-AAEB-46B9D8C07D23}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\SmartAmbience.projitems*{80a3546e-c58e-4664-8c5b-1196f3a2c4f9}*SharedItemsImports = 5
-		src\SmartAmbience.projitems*{b0ba06fe-6437-4b9e-8c76-3adfc8d191d2}*SharedItemsImports = 4
-		src\SmartAmbience.projitems*{cf0a161a-99ba-4f01-af5e-16c6fcbc85ae}*SharedItemsImports = 13
-		src\SmartAmbience.projitems*{fa5adb71-ca2d-4293-b22f-47e009980cf6}*SharedItemsImports = 5
+		src\SmartAmbience\SmartAmbience.projitems*{80a3546e-c58e-4664-8c5b-1196f3a2c4f9}*SharedItemsImports = 5
+		src\SmartAmbience\SmartAmbience.projitems*{b0ba06fe-6437-4b9e-8c76-3adfc8d191d2}*SharedItemsImports = 4
+		src\SmartAmbience\SmartAmbience.projitems*{cf0a161a-99ba-4f01-af5e-16c6fcbc85ae}*SharedItemsImports = 13
+		src\SmartAmbience\SmartAmbience.projitems*{fa5adb71-ca2d-4293-b22f-47e009980cf6}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

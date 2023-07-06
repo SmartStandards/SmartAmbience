@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\lib-net6.0\SmartAmbience-net6.0.csproj" />
+    <ProjectReference Include="..\..\src\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj" />
   </ItemGroup>
 
 </Project>
