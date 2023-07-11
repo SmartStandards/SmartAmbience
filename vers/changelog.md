@@ -8,9 +8,15 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* adjusted some small changes to the AmbientField
-* added the 'AmbientFieldAdapterMiddleware' (**new Feature**) (+setup extension) to configure a ASP .net core Webapi environment for appropriate usage of AmbientFields
-* added the 'ExtractFlowedDataAttribute' to automatically apply incoming flowed data (from HTTP-headers) into 'AmbientFields' (**new Feature**)
+*(none)*
+
+
+
+## v 1.1.0
+released **2023-07-11**, including:
+ - added the 'AmbientFieldAdapterMiddleware' (**new Feature**) (+setup extension) to configure a ASP .net core Webapi environment for appropriate usage of AmbientFields
+ - added the 'ExtractFlowedDataAttribute' to automatically apply incoming flowed data (from HTTP-headers) into 'AmbientFields' (**new Feature**)
+ - adjusted some small changes to the AmbientField
 
 
 
