@@ -29,7 +29,7 @@
       </group>
       <group targetFramework="net6.0">
         <dependency id="SmartAmbience" version="999.0.0" />
-        <dependency id="Microsoft.AspNetCore.Http" version="[2.2.2,2.999" />
+        <dependency id="Microsoft.AspNetCore.Http" version="[2.2.2,2.999]" />
         <dependency id="Microsoft.AspNetCore.Mvc.Core" version="[2.2.2,2.999]" />
         <dependency id="Newtonsoft.Json" version="[13.0.3,13.999]" />
       </group>
