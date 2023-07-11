@@ -1,25 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 
 namespace System.Threading {
 
   /// <summary>
   ///    Contains a named string value that is stored AsyncLocal and in an external short living context ("Operation", "Request", ...) as fallback.
   /// </summary>
-  [DebuggerDisplay(nameof(AmbientField) + " ({Name})")]
   public partial class AmbientField {
 
     private static IAmbienceToSomeContextAdapter _ContextAdapter;
 
     private bool _ContextAdapterEventHandlersAdded;
 
-    private static string _ContextAdapterSetterCaller;
-
     private AmbientFieldDebugInfo _DebugInfo = new AmbientFieldDebugInfo();
 
-    private static List<AmbientField> _ExposedInstances = new List<AmbientField>();
+    private static Dictionary<string, AmbientField> _ExposedInstances = new Dictionary<string, AmbientField>();
 
     private AsyncLocal<string> _InnerAsyncLocal = new AsyncLocal<string>();
 
@@ -41,18 +35,34 @@ namespace System.Threading {
     ///   Tags the AmbientField as "exposed". It will be registered in the ExposedInstances catalog.
     ///   The intended purpose is flowing: Exposed AmbientFields can be collected by a flowing engine (to be flowed accross web service hops).
     /// </param>
-    public AmbientField(string name, bool exposedInstance = false, [CallerFilePath] string callerFileFullName = null) {
-
-      this.ConstructorCallerFileFullName = callerFileFullName;
-
-      this.Owner = Path.GetFileNameWithoutExtension(callerFileFullName);
+    public AmbientField(string name, bool exposedInstance = false) {
 
       this.Name = name;
 
-      this.Key = this.Owner + "." + name + "'" + this.GetHashCode().ToString();
+      if (!exposedInstance) {
+        this.Key = name + "'" + this.GetHashCode().ToString();
+      }
 
-      if (exposedInstance) {
-        _ExposedInstances.Add(this);
+      else {
+        this.Key = name;
+        _ExposedInstances.Add(name, this);
+
+        // "Pre-Staging": Der Wert des AmbientField kann zeitlich vor dessen Konstruktor bereits hinterlegt worden sein.
+        // (macht z.B. der AmbienceHub beim Restore der Flowed Ambient States).
+        // Der Konstruktor wird ggf. vom Owner des AmbientField (z.B. ProfileStateManager) lazy aufgerufen - und somit viel später.
+
+        // In dieser Konstellation, muss der hinterlegte Wert ins InnerAsyncLocal synchronisiert werden:
+
+        if (ContextAdapter != null) {
+
+          string preStagedValue = ContextAdapter.TryGetCurrentValue(this.Key);
+
+          if (preStagedValue != null) {
+            _InnerAsyncLocal.Value = preStagedValue;
+          }
+
+        }
+
       }
 
     }
@@ -64,10 +74,19 @@ namespace System.Threading {
       }
 
       if (!_ContextAdapterEventHandlersAdded) {
-        _ContextAdapter.CurrentContextIsTerminating += this.ContextAdapter_IsTerminating;
+        global::System.Threading.AmbientField._ContextAdapter.CurrentContextIsTerminating += this.ContextAdapter_IsTerminating;
         _ContextAdapterEventHandlersAdded = true;
       }
 
+    }
+
+    public static void InjectPreStagedValue(string name, string value) {
+
+      if (_ContextAdapter is null) {
+        throw new Exception($"{nameof(ContextAdapter)} must be initialized before using {nameof(AmbientField)}!");
+      }
+
+      _ContextAdapter.SetCurrentValue(name, value);
     }
 
     public void InvokeUnderTemporaryBranch(string overridingValue, Action actionToInvoke) {
@@ -85,25 +104,21 @@ namespace System.Threading {
 
     }
 
-    public string ConstructorCallerFileFullName { get; private set; }
-
     /// <summary>
     ///   The adapter for storing the root item in an external fallback context depending upon the hosting technology.
     /// </summary>
     /// <remarks>
     ///   This must be initialized before any AmbientField can be used.
     /// </remarks>
-    public static IAmbienceToSomeContextAdapter ContextAdapter{
+    public static IAmbienceToSomeContextAdapter ContextAdapter {
       get {
         return _ContextAdapter;
       }
       set {
         if (_ContextAdapter != null) {
-          //throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().Name}\" and cannot be changed to \"{value.GetType().Name}\" by \"{callerFileFullName}\"");
-          throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().Name}\" and cannot be changed to \"{value.GetType().Name}\"");
+          throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().Name}\" and cannot be changed to \"{value.GetType().Name}\"!");
         }
         _ContextAdapter = value;
-        //_ContextAdapterSetterCaller = callerFileFullName;
       }
     }
 
@@ -119,7 +134,7 @@ namespace System.Threading {
       }
     }
 
-    public static List<AmbientField> ExposedInstances {
+    public static IDictionary<string, AmbientField> ExposedInstances {
       get {
         return _ExposedInstances;
       }
@@ -135,37 +150,16 @@ namespace System.Threading {
       }
       set {
         _RootValueIsWriteOnce = value;
-        //_DebugInfo.RootValueIsWriteOnceSetterCaller = callerFileFullName;
       }
     }
 
     /// <summary>
-    ///   The CallerMemberName of the method which set the context adapter.
-    /// </summary>
-    /// <remarks>
-    ///   This is only for diagnostics. It is helpful to ensure that the ContextAdapter has been set by the component that was supposed to do that.
-    /// </remarks>
-    public static string ContextAdapterSetterCaller {
-      get {
-        return _ContextAdapterSetterCaller;
-      }
-    }
-
-    /// <summary>
-    ///   This is a key string built from "{Owner}.{Name}'{HashNumber}", which is used as key for the external fallback context.
-    ///   The guid avoids key collisions to entries from 3rd party components, that may exist in the external fallback context.
+    ///   Normally, this is a key string built from "{Name}'{HashNumber}", which is used as key for the external fallback context.
+    ///   The HashNumber avoids key collisions to entries from 3rd party components, that may exist in the external fallback context.
+    ///   For "ExposedInstances", the key ist just "{Name}" - otherwise it would be impossible to inject pre staged values 
+    ///   (because this would happen before the hash number is even generated).
     /// </summary>
     public string Key { get; private set; }
-
-    /// <summary>
-    ///   The class name (hopefully, read remarks) which called the constructor.
-    /// </summary>
-    /// <returns></returns>
-    /// <remarks>
-    ///   Actually it's the file name without extension of the code file from where th constructor was called.
-    ///   But as there exists the convention, that all file names should be the same as the contained class, that should work.
-    /// </remarks>
-    public string Owner { get; private set; }
 
     /// <summary>
     ///   Must be set via constructor parameter. See documentation there.
@@ -199,57 +193,65 @@ namespace System.Threading {
         if (asyncLocalValue != null) {
           return asyncLocalValue;
         }
+
         else {
-          _InnerAsyncLocal.Value = rootValue; // "Reparatur"
+
+          // Der AsyncLocal-Context ist zwischenzeitlich verloren gegangen, wir müssen ihn wiederherstellen...
+
+          _InnerAsyncLocal.Value = rootValue;
+
+          // ...damit zukünftige Sub-Threads funktionieren können
+          // (wir erinnern uns: Bei Sub-Threads versagt oft der Value aus dem ContextAdapter - z.B. HttpContext.Current.Value liefert als Value null.
+          // der Context.Current selbst ist dabei nicht null).
+
           return rootValue;
         }
 
-        // Null cannot be used because AsnycLocal.Value returns null when it was lost
-        // - so we cannot distinguish that accidental null from an intentional null
-
-        // Ensure the root (= fallback) value is only set once.
-        // Subsequent value changes have to be treated as "overriding sessions".
-
-        // Actually store the value
-
-      } // Immer setzen
+      }
       set {
 
         this.AssertContextAdapter();
 
+        // Null cannot be used because AsnycLocal.Value returns null when it was lost
+        // - so we cannot distinguish that accidental null from an intentional null
+
         if (value is null) {
-          throw new ArgumentException($"Null can not be carried as value for \"{this.Owner}.{this.Name}\"!");
+          throw new ArgumentException($"Null can not be carried as value for \"{this.Name}\"!");
         }
 
         if (_RootValueIsWriteOnce) {
-          string currentRootValue = ContextAdapter.TryGetCurrentValue(this.Key);
+
+          // Ensure the root (= fallback) value is only set once.
+          // Subsequent value changes have to be treated as "overriding sessions".
+
+          string currentRootValue = _ContextAdapter.TryGetCurrentValue(this.Key);
+
           if (!string.IsNullOrEmpty(currentRootValue) && !currentRootValue.Equals(value)) {
-            //throw new InvalidOperationException($"Root value of \"{this.Owner}.{this.Name}\" has already been set to \"{currentRootValue}\" and cannot be changed to \"{value}\" by \"{callerFileFullName}\"");
-            throw new InvalidOperationException($"Root value of \"{this.Owner}.{this.Name}\" has already been set to \"{currentRootValue}\" and cannot be changed to \"{value}\"");
+            throw new InvalidOperationException($"Root value of \"{this.Name}\" has already been set to \"{currentRootValue}\" and cannot be changed to \"{value}\"!");
           }
+
         }
 
-        ContextAdapter.SetCurrentValue(this.Key, value);
-        _InnerAsyncLocal.Value = value;
-        //_DebugInfo.RootValueSetterCaller = callerFileFullName;
+        // Actually store the value
+
+        _ContextAdapter.SetCurrentValue(this.Key, value);
+
+        _InnerAsyncLocal.Value = value; // Immer setzen
       }
     }
 
     private void ContextAdapter_IsTerminating() {
-      AmbientField.ContextAdapter.CurrentContextIsTerminating -= this.ContextAdapter_IsTerminating;
+
+      global::System.Threading.AmbientField.ContextAdapter.CurrentContextIsTerminating -= this.ContextAdapter_IsTerminating;
+
       if (this.OnTerminatingMethod != null) {
         string dyingValue = ContextAdapter.TryGetCurrentValue(this.Name);
         this.OnTerminatingMethod.Invoke(dyingValue);
       }
+
     }
 
     public partial class AmbientFieldDebugInfo {
-
-      ///// <summary>
-      /////   The CallerMemberName of the method which set the root value.
-      ///// </summary>
-      ///// <returns></returns>
-      //public string RootValueSetterCaller { get; set; }
 
       /// <remarks> ORDER DEPENDENCY! Fetch this value AFTER get_Value()! </remarks>
       public string RootValueDuringGet { get; set; }
@@ -260,8 +262,6 @@ namespace System.Threading {
       /// </summary>
       /// <remarks> ORDER DEPENDENCY! Fetch this value AFTER get_Value()! </remarks>
       public string AsyncLocalValueDuringGet { get; set; }
-
-      //public string RootValueIsWriteOnceSetterCaller { get; set; }
 
     }
 

@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace System.Threading {
 
@@ -13,14 +13,15 @@ namespace System.Threading {
 
     private static AmbientField _TemporaryBranchTestField = new AmbientField("TemporaryBranchTestField");
 
+    private static AmbientField _AmbientFieldWithPreStagedValue; // Hier bewusst kein "New"!
+
     [TestMethod()]
     public void AmbientField_SettingDifferentValues_ShouldWorkAsExpected() {
 
       // Owner, Name and Key should have been set correctly
 
-      Assert.AreEqual(nameof(AmbientFieldTests), _AmbientField.Owner);
       Assert.AreEqual("AmbientField", _AmbientField.Name);
-      Assert.IsTrue(_AmbientField.Key.IndexOf($"{nameof(AmbientFieldTests)}.AmbientField'") >= 0);
+      Assert.IsTrue(_AmbientField.Key.IndexOf("AmbientField'") >= 0);
 
       // By default, changing the (root) value is allowed
 
@@ -51,11 +52,11 @@ namespace System.Threading {
         caughtException = ex;
       }
 
-      Assert.AreEqual($"Null can not be carried as value for \"{nameof(AmbientFieldTests)}.AmbientField\"!", caughtException.Message);
+      Assert.AreEqual($"Null can not be carried as value for \"AmbientField\"!", caughtException.Message);
 
       // By default (no constructor parameter), it's not an "ExposedField"
 
-      Assert.IsFalse(AmbientField.ExposedInstances.Exists((AmbientField f) => f.Name == "AmbientField"));
+      Assert.IsFalse(AmbientField.ExposedInstances.Keys.Contains("AmbientField"));
 
     }
 
@@ -85,8 +86,7 @@ namespace System.Threading {
         caughtException = ex;
       }
 
-      //Assert.AreEqual($"Root value of \"{nameof(AmbientFieldTests)}.WriteOnceAmbientField\" has already been set to \"Highlander\" and cannot be changed to \"Es kann nur einen geben.\"  by \"{callerFileFullName}\"", caughtException.Message);
-      Assert.AreEqual($"Root value of \"{nameof(AmbientFieldTests)}.WriteOnceAmbientField\" has already been set to \"Highlander\" and cannot be changed to \"Es kann nur einen geben.\"", caughtException.Message);
+      Assert.AreEqual($"Root value of \"WriteOnceAmbientField\" has already been set to \"Highlander\" and cannot be changed to \"Es kann nur einen geben.\"!", caughtException.Message);
 
       // setting the same value is allowed
 
@@ -100,7 +100,7 @@ namespace System.Threading {
 
       // "ExposedField=Ture" should appear in ExposedInstances
 
-      Assert.IsTrue(AmbientField.ExposedInstances.Exists((AmbientField f) => f.Name == "WriteOnceAmbientField"));
+      Assert.IsTrue(AmbientField.ExposedInstances.Keys.Contains("WriteOnceAmbientField"));
 
     }
 
@@ -126,6 +126,68 @@ namespace System.Threading {
       Assert.AreEqual(typeof(DivideByZeroException), caughtException.GetType());
 
       Assert.AreEqual("OriginalValue", _TemporaryBranchTestField.Value);
+
+    }
+
+    [TestMethod()]
+    public void AmbientField_InjectingPreStagedValue_ShouldWorkAsExpected() {
+
+      AmbientField.InjectPreStagedValue("AmbientFieldWithPreStagedValue", "InjectedDummyValue");
+
+      _AmbientFieldWithPreStagedValue = new AmbientField("AmbientFieldWithPreStagedValue", true);
+
+      Assert.AreEqual("InjectedDummyValue", _AmbientFieldWithPreStagedValue.Value);
+
+      Exception caughtException = null;
+
+      try {
+        _AmbientFieldWithPreStagedValue = new AmbientField("AmbientFieldWithPreStagedValue", true);
+      }
+      catch (Exception ex) {
+        caughtException = ex;
+      }
+
+      Assert.IsTrue(caughtException.Message.IndexOf("same key") >= 0);
+
+    }
+
+    [TestMethod()]
+    public void AmbientField_ContextAdapterNull_ShouldHaveSpecifiedErrorHandling() {
+
+      IAmbienceToSomeContextAdapter rescuedContextAdapter = AmbientField.TestApi.DirectContextAdapter;
+
+      try {
+
+        AmbientField.TestApi.DirectContextAdapter = null;
+
+        var myAmbientField = new AmbientField("ErrorHandlingTestAmbientField");
+
+        // Constructor should not throw an exception although ContextAdapter is null...
+
+        Exception caughtException = null;
+
+        try {
+          string dummyValue = _AmbientField.Value; // ... getting the value should thrown an exception ...
+        }
+        catch (Exception ex) {
+          caughtException = ex;
+        }
+
+        Assert.IsTrue(caughtException.Message.IndexOf("must be initialized before using") >= 0);
+
+        try {
+          _AmbientField.Value = "dummy"; // ... setting the value should thrown an exception ...
+        }
+        catch (Exception ex) {
+          caughtException = ex;
+        }
+
+        Assert.IsTrue(caughtException.Message.IndexOf("must be initialized before using") >= 0);
+      }
+      finally {
+
+        AmbientField.TestApi.DirectContextAdapter = rescuedContextAdapter;
+      }
 
     }
 

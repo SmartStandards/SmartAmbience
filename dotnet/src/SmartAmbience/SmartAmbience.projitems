@@ -10,9 +10,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\PriorityList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)..\..\..\..\..\..\%28git%29\SmartStandards\%28SmartStandards%29 SmartAmbience\dotnet\src\SmartAmbience\%28internal%29\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceHub.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceToAppDomainAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.TestApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\IAmbienceToSomeContextAdapter.cs" />
   </ItemGroup>
 </Project>

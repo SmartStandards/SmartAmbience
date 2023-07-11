@@ -135,7 +135,7 @@ namespace System.Threading {
       if (AmbientField.ContextAdapter == null) {
         return;
       }
-      foreach (AmbientField exposedInstance in AmbientField.ExposedInstances) {
+      foreach (AmbientField exposedInstance in AmbientField.ExposedInstances.Values) {
         capture(exposedInstance.Name, exposedInstance.Value);
       };
     }
@@ -146,7 +146,7 @@ namespace System.Threading {
       }
       foreach (KeyValuePair<string, string> entryToRestore in sourceToRestore) {
         bool restored = false;
-        foreach (AmbientField exposedInstance in AmbientField.ExposedInstances) {
+        foreach (AmbientField exposedInstance in AmbientField.ExposedInstances.Values) {
           if(exposedInstance.Name.Equals(entryToRestore.Key, StringComparison.CurrentCultureIgnoreCase)) {
             Debug.WriteLine($"{nameof(AmbienceHub)} setting value '{entryToRestore.Value}' for AmbientField '{entryToRestore.Key}'");
             exposedInstance.Value = entryToRestore.Value; 
