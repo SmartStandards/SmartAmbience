@@ -1,13 +1,13 @@
 {
-  "currentVersion": "1.1.0",
-  "currentVersionWithSuffix": "1.1.0",
+  "currentVersion": "1.2.0",
+  "currentVersionWithSuffix": "1.2.0",
   "releaseType": "official",
-  "previousVersion": "1.0.0",
+  "previousVersion": "1.1.0",
   "changeGrade": "minor",
   "currentMajor": 1,
-  "currentMinor": 1,
+  "currentMinor": 2,
   "currentPatch": 0,
-  "versionDateInfo": "2023-07-11",
-  "versionTimeInfo": "11:28:16",
-  "versionNotes": "- added the 'AmbientFieldAdapterMiddleware' (new Feature) (+setup extension) to configure a ASP .net core Webapi environment for appropriate usage of AmbientFields\n- added the 'ExtractFlowedDataAttribute' to automatically apply incoming flowed data (from HTTP-headers) into 'AmbientFields' (new Feature)\n- adjusted some small changes to the AmbientField\n"
+  "versionDateInfo": "2023-11-17",
+  "versionTimeInfo": "10:19:31",
+  "versionNotes": "- new Feature: added support for global endpoints (without key prefix)\n"
 }

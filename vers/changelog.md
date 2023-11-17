@@ -8,7 +8,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-- **new Feature**: added support for global endpoints (without key prefix)
+*(none)*
+
+
+
+## v 1.2.0
+released **2023-11-17**, including:
+ - **new Feature**: added support for global endpoints (without key prefix)
 
 
 
