@@ -40,6 +40,7 @@ namespace System.Threading {
 
       bool ep1Restored = false;
       bool ep2Restored = false;
+      bool ep3Restored = false;
 
       AmbienceHub.BindCustomEndpoint(
         "A",
@@ -65,15 +66,202 @@ namespace System.Threading {
         }
       );
 
+      AmbienceHub.BindCustomEndpoint(
+        "^AGlobalEndpoint",//this one works at root level without a prefix for the keys
+        (capture) => { },
+        (sourceToRestore) => {
+          ep3Restored = true;
+          Assert.AreEqual(2, sourceToRestore.Count());
+          Assert.AreEqual("Global1", sourceToRestore.First().Key);
+          Assert.AreEqual("C.Global2", sourceToRestore.Last().Key); //with the suffix, because were on root level
+          //the other keys must not passed to this endpoint because for suffix A. & B. we have dedicated endpoints
+        }
+      );
+
       var valuesToRestore = new Dictionary<string, string>();
       valuesToRestore.Add("B.b1", "Bar");
+      valuesToRestore.Add("Global1", "xxx");
       valuesToRestore.Add("A.a1", "Foo");
       valuesToRestore.Add("B.b2", "Baz");
+      valuesToRestore.Add("C.Global2", "yyy");
 
       AmbienceHub.RestoreValuesFrom(valuesToRestore);
 
       Assert.IsTrue(ep1Restored);
       Assert.IsTrue(ep2Restored);
+      Assert.IsTrue(ep3Restored);
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_MixedCaptureWithGlobalEndpointShouldWork() {
+
+      bool ep1Captured = false;
+      bool ep2Captured = false;
+      bool ep3Captured = false;
+
+      AmbienceHub.BindCustomEndpoint(
+        "A",
+        (capture) => { 
+          ep1Captured = true;
+          capture("a1", "Foo");
+        },
+        (sourceToRestore) => {  }
+      );
+
+      AmbienceHub.BindCustomEndpoint(
+        "^AGlobalEndpoint",//this one works at root level without a prefix for the keys
+        (capture) => { 
+          ep2Captured = true;
+          capture("Global1","xxx");
+          capture("C.Global2","yyy");
+        },
+        (sourceToRestore) => {  }
+      );
+
+      AmbienceHub.BindCustomEndpoint(
+        "B",
+        (capture) => {
+          capture("b1", "Bar");
+          capture("Baz", "Baz");
+          ep3Captured = true;
+        },
+        (sourceToRestore) => {  }
+      );
+
+      var buffer = new Dictionary<string, string>();
+      AmbienceHub.CaptureCurrentValuesTo(buffer);
+
+      Assert.IsTrue(ep1Captured);
+      Assert.IsTrue(ep2Captured);
+      Assert.IsTrue(ep3Captured);
+
+      Assert.AreEqual(5,buffer.Count);
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_ShouldThrowOnKeyCollisionDuringCapture1() {
+
+      bool epCaptured = false;
+
+      AmbienceHub.BindCustomEndpoint(
+        "A",
+        (capture) => {
+          epCaptured = true;
+          capture("WillCollide", "1");
+          capture("WillCollide", "2");
+        },
+        (sourceToRestore) => { }
+      );
+
+      var buffer = new Dictionary<string, string>();
+      Exception catchedException = null;
+
+      try {
+        AmbienceHub.CaptureCurrentValuesTo(buffer);
+      }
+      catch (Exception ex) {
+        catchedException = ex;
+      }
+
+      Assert.IsTrue(epCaptured);
+
+      Assert.IsNotNull(catchedException);
+      Assert.IsTrue(catchedException.Message.Contains("WillCollide"));
+
+      Assert.AreEqual(1, buffer.Count);
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_ShouldThrowOnKeyCollisionDuringCapture2() {
+
+      bool ep1Captured = false;
+      bool ep2Captured = false;
+
+      AmbienceHub.BindCustomEndpoint(
+        "^GlobalEpA",
+        (capture) => {
+          ep1Captured = true;
+          capture("A", "a");
+          capture("WillCollide", "1");
+        },
+        (sourceToRestore) => { }
+      );
+
+      AmbienceHub.BindCustomEndpoint(
+        "^GlobalEpB",
+        (capture) => {
+          ep2Captured = true;
+          capture("B", "b");
+          capture("WillCollide", "2");
+        },
+        (sourceToRestore) => { }
+      );
+
+      var buffer = new Dictionary<string, string>();
+      Exception catchedException = null;
+
+      try {
+        AmbienceHub.CaptureCurrentValuesTo(buffer);
+      }
+      catch (Exception ex) {
+        catchedException = ex;
+      }
+
+      Assert.IsTrue(ep1Captured);
+      Assert.IsTrue(ep2Captured);
+
+      Assert.IsNotNull(catchedException);
+      Assert.IsTrue(catchedException.Message.Contains("WillCollide"));
+
+      Assert.AreEqual(3, buffer.Count);
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_ShouldThrowOnPrefixTransgressionWhenCapturingGlobal() {
+
+      bool ep1Captured = false;
+      bool ep2Captured = false;
+
+      AmbienceHub.BindCustomEndpoint(
+        "A",
+        (capture) => {
+          ep1Captured = true;
+        },
+        (sourceToRestore) => { }
+      );
+
+      AmbienceHub.BindCustomEndpoint(
+        "^MyGlobalEndpoint",//this one works at root level without a prefix for the keys
+        (capture) => {
+          ep2Captured = true;
+          capture("Global1", "xxx");
+          capture("AnyManualPrefix.Global2", "yyy");
+          capture("A.WillBeCollision", "uiuiui!");
+        },
+        (sourceToRestore) => { }
+      );
+
+      var buffer = new Dictionary<string, string>();
+      Exception catchedException = null;
+
+      try {
+        AmbienceHub.CaptureCurrentValuesTo(buffer);
+      }
+      catch (Exception ex) {
+        catchedException = ex;
+      }
+
+      Assert.IsNotNull(catchedException);
+      Assert.IsTrue(catchedException.Message.Contains("A.WillBeCollision"));
+
+      Assert.AreEqual(2, buffer.Count);
+
+      Assert.IsTrue(ep1Captured);
+      Assert.IsTrue(ep2Captured);
 
     }
 

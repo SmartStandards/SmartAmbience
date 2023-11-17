@@ -17,8 +17,25 @@ namespace System.Threading {
     }
 
     private static EndpointAdapter[] _EndpointAdaptersInRestoreOrder;
+    private static string[] _PrefixesOfDedicatedEndpoints;
 
     private static PriorityList<string> _EndpointPriorities;
+
+    public delegate void OnRestoreNullHandlerMethod(ref IDictionary<string, string> defaultsToUse);
+
+    /// <summary>
+    /// In default there will be a handler method, which throws an exception!
+    /// You can apply your own method to this hook in order to let the hub pass an
+    /// customized/empty set of items to the endpoints OR
+    /// just set the OnRestoreNullHandler=null to skip any restore silently.
+    /// Note: this quite different from calling each endpoint with an empty set of entries
+    /// - here the endpoints WONT GET ANY TRIGGER!!!
+    /// </summary>
+    public static OnRestoreNullHandlerMethod OnRestoreNullHandler = (
+      (ref IDictionary<string, string> defaultsToUse) => {
+        throw new Exception($"AmbienceHub received NULL as sourceToRestore! If this is an allowed scenario, you need to hook up the '{nameof(AmbienceHub)}.{nameof(AmbienceHub.OnRestoreNullHandler)}'!");
+      }
+    );
 
     static AmbienceHub() {
       ResetCustomBindings();
@@ -27,6 +44,7 @@ namespace System.Threading {
     public static void ResetCustomBindings() {
       _EndpointPriorities = new PriorityList<string>();
       _EndpointAdaptersInRestoreOrder = new EndpointAdapter[] { };
+      _PrefixesOfDedicatedEndpoints = new string[] { };
 
       //the flowing for AmbientFields is always present
       BindAmbientFieldsAsEndpoint();
@@ -35,7 +53,11 @@ namespace System.Threading {
     /// <summary>
     /// Created a wire-up to a custom endpoint which is participating each time an ambient-snapshot is created or restored.
     /// </summary>
-    /// <param name="endpointName"></param>
+    /// <param name="endpointName">
+    /// Note: prepending an "^" befor the name will treat the endpoint as ROOT.
+    /// In this case the name will NOT be added as prefix to the fieldnames when transporting them.
+    /// Any prefixing needs to be dpne by the endpoint itself.
+    /// </param>
     /// <param name="captureMethod"></param>
     /// <param name="restoreMethod"></param>
     /// <param name="assertRestorePerformanceMs"></param>
@@ -67,7 +89,9 @@ namespace System.Threading {
         (ep) => _EndpointPriorities.PriorityOf(ep.EndpointName.ToLower())
       ).ToArray();
 
-  }
+      _PrefixesOfDedicatedEndpoints = _EndpointAdaptersInRestoreOrder.Where((e) => !e.EndpointName.StartsWith("^")).Select((e) => e.EndpointName + ".").ToArray();
+
+    }
 
     /// <summary>
     /// Here a custom logging-method can be injected - it will be invoked, when a endpoint will exceed the maximum
@@ -82,11 +106,43 @@ namespace System.Threading {
     }
 
     public static void CaptureCurrentValuesTo(Action<string,string> capturingCallback) {
+      var alreadyCapturedKeys = new HashSet<string>();
+
       foreach (EndpointAdapter endpoint in _EndpointAdaptersInRestoreOrder) {
+        bool isGlobalEndpoint = endpoint.EndpointName.StartsWith("^");
         endpoint.CaptureMethod.Invoke(
-          (string key, string value) => capturingCallback.Invoke(endpoint.EndpointName + "." + key, value) //add the endpoint name as prefix
+          (string key, string value) => {
+
+            if (!alreadyCapturedKeys.Add(key)) {
+              //same key was already captured before
+              throw new Exception(
+                $"The AmbientEndpoint '{endpoint.EndpointName}' attemted to capture '{key}', which was already captured."
+              );
+            }
+
+            if (isGlobalEndpoint) {
+
+              //GUARD: keys of global endpoints have no mandatory prefix, so they can collide with
+              //keys, comming from dedicated endpoints. If a dedicated endpoint was registered, then
+              //the prefix (accordingly to the endpoint name) is reserved for that endpoint and must not
+              //be used by global endpoints!
+              if (key.StartsWithAny(_PrefixesOfDedicatedEndpoints, StringComparison.InvariantCultureIgnoreCase)) {
+                string concretePrefixForErrorMessage = key.Substring(0, key.IndexOf('.') + 1);
+                throw new Exception(
+                  $"The AmbientEndpoint '{endpoint.EndpointName}' has caputured a value for '{key}'. This is forbidden, because the prefix '{concretePrefixForErrorMessage}' is reserved for the accordingly named explicit endpoint!"
+                );
+              }
+
+              capturingCallback.Invoke(key, value);
+            }
+            else {
+              //add the endpoint name as prefix
+              capturingCallback.Invoke(endpoint.EndpointName + "." + key, value);
+            }
+          }
         );
       }
+
     }
 
     public static string CaptureCurrentValuesAsDump(){
@@ -95,20 +151,49 @@ namespace System.Threading {
       return sb.ToString();
     }
 
-    /// <summary>
-    /// WARNING: THIS IS ONLY MADE TO BE USED FROM ABSTRACT TRANSPORT-TECHNOLOGY
-    /// </summary>
-    /// <param name="sourceToRestore"></param>
-    public static void RestoreValuesFrom(IEnumerable<KeyValuePair<string, string>> sourceToRestore) {
+   /// <summary>
+   /// WARNING: THIS IS ONLY MADE TO BE USED FROM ABSTRACT TRANSPORT-TECHNOLOGY
+   /// </summary>
+   /// <param name="sourceToRestore"></param>
+   public static void RestoreValuesFrom(IEnumerable<KeyValuePair<string, string>> sourceToRestore) {
+
+      if(sourceToRestore == null) {
+        IDictionary<string, string> defaultsToRestore = new Dictionary<string, string>();
+        if(OnRestoreNullHandler != null) {
+          OnRestoreNullHandler.Invoke(ref defaultsToRestore);//in default this thows an exception!      
+        }
+        else { //skips the restore!
+          return;
+          // Note: this quite different from calling each endpoint with an empty set of entries
+          // - here the endpoints WONT GET ANY TRIGGER!!!
+        }
+        sourceToRestore = defaultsToRestore;
+      }
 
       foreach (EndpointAdapter endpoint in _EndpointAdaptersInRestoreOrder) {
 
-        string prefix = endpoint.EndpointName + ".";
-        int prefixLength = prefix.Length;
+        bool isGlobalEndpoint = endpoint.EndpointName.StartsWith("^");
+        var filteredSource = sourceToRestore;
+        int prefixLength = 0;
 
-        var sourceEntriesForCurrentEndpoint = sourceToRestore.Where(
-          (e) => e.Key.StartsWith(prefix, StringComparison.InvariantCultureIgnoreCase)
-        ).Select(
+        if (!isGlobalEndpoint) {
+          string prefixForFiltering = endpoint.EndpointName + ".";
+          prefixLength = prefixForFiltering.Length;
+
+          filteredSource = sourceToRestore.Where(
+            (e) => e.Key.StartsWith(prefixForFiltering, StringComparison.InvariantCultureIgnoreCase)
+          );
+
+        }
+        else {
+
+          filteredSource = sourceToRestore.Where(
+            (e) => !e.Key.StartsWithAny(_PrefixesOfDedicatedEndpoints, StringComparison.InvariantCultureIgnoreCase)
+          );
+
+        }
+
+        var sourceEntriesForCurrentEndpoint = filteredSource.Select(
           (e) => new KeyValuePair<string, string>(e.Key.Substring(prefixLength), e.Value)
         ).ToArray();
 
@@ -128,7 +213,7 @@ namespace System.Threading {
     #region " default endpoint for exposed AmbientFields "
 
     private static void BindAmbientFieldsAsEndpoint() {
-      BindCustomEndpoint("Context", captureAmbientFields, restoreAmbientFields);
+      BindCustomEndpoint("^AmbientFields", captureAmbientFields, restoreAmbientFields);
     }
 
     private static void captureAmbientFields(Action<string, string> capture) {
