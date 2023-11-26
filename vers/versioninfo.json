@@ -1,13 +1,13 @@
 {
-  "currentVersion": "1.2.0",
-  "currentVersionWithSuffix": "1.2.0",
+  "currentVersion": "2.0.0",
+  "currentVersionWithSuffix": "2.0.0",
   "releaseType": "official",
-  "previousVersion": "1.1.0",
-  "changeGrade": "minor",
-  "currentMajor": 1,
-  "currentMinor": 2,
+  "previousVersion": "1.2.0",
+  "changeGrade": "major",
+  "currentMajor": 2,
+  "currentMinor": 0,
   "currentPatch": 0,
-  "versionDateInfo": "2023-11-17",
-  "versionTimeInfo": "10:19:31",
-  "versionNotes": "- new Feature: added support for global endpoints (without key prefix)\n"
+  "versionDateInfo": "2023-11-26",
+  "versionTimeInfo": "14:20:52",
+  "versionNotes": "- we have made a **Breaking Change** by adjusting the namespace to 'DistributedDataFlow' in order with come signature changes\n- added the new Feature of 'FlowingContracts' to filter the set of included data when capturing or restoring\n"
 }
