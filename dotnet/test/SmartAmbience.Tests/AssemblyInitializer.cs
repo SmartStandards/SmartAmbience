@@ -12,7 +12,6 @@ namespace System.Threading {
 
       AmbientField.ContextAdapter = new AmbienceToAppdomainAdapter();
 
-
     }
 
   }

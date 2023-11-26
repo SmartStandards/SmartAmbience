@@ -8,9 +8,8 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
-
-
+- added the new Feature of 'FlowingContracts' to filter the set of included data when capturing or restoring
+- we have made a **Breaking Change** by adjusting the namespace to 'DistributedDataFlow' in order with come signature changes
 
 ## v 1.2.0
 released **2023-11-17**, including:

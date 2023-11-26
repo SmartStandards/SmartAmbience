@@ -1,8 +1,12 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NuGet.Frameworks;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Threading;
 
-namespace System.Threading {
+namespace DistributedDataFlow {
 
   [TestClass()]
   public partial class AmbienceHubTests {
@@ -10,6 +14,8 @@ namespace System.Threading {
     [TestInitialize]
     public void Initialize() {
       AmbienceHub.ResetCustomBindings();
+      AmbienceHub.DisableAndResetFlowingContracts();
+      AmbientField.ExposedInstances.Clear();
     }
 
     [TestMethod()]
@@ -370,6 +376,194 @@ namespace System.Threading {
       AmbienceHub.RestoreValuesFrom(emptyDummy);
 
       Assert.IsFalse(hookWasCalled);
+
+    }
+
+    [TestMethod(), ExpectedException(typeof(InvalidOperationException))]
+    public void AmbienceHub_FlowingContractShouldBeImmutable() {
+
+      FlowingContractDefinition grabbedDefiniton = null; ;
+
+      AmbienceHub.DefineFlowingContract(
+        "requestchannel",
+        (contract) => {
+           contract.IncludeCustomEndpoints("ComponentDiscovery");
+           contract.IncludeAllExposedAmbientFieldInstances();
+           contract.ExcludeExposedAmbientFieldInstances("AuthToken");
+
+           //this is a bad hack, but possible
+           grabbedDefiniton = contract;
+        }
+      );
+
+      Assert.IsNotNull(grabbedDefiniton);
+
+      //forbidden change from outside -> should throw the expected exception
+      grabbedDefiniton.IncludeCustomEndpoints("Foo");
+
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldRejectContractIfNotConfigured1() {
+      //privde a contractName without having configued to use contracts
+      AmbienceHub.CaptureCurrentValuesAsDump("AContract");
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldRejectContractIfNotConfigured2() {
+      //privde a contractName without having configued to use contracts
+      AmbienceHub.RestoreValuesFrom(new Dictionary<string,string>(),"AContract");
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldRequireContractIfConfigured1() {
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeAllExposedAmbientFieldInstances();
+        }
+      );
+
+      //privde no contractName, but having configued to use contracts
+      AmbienceHub.CaptureCurrentValuesAsDump();
+
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldRequireContractIfConfigured2() {
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeAllExposedAmbientFieldInstances();
+        }
+      );
+
+      //privde no contractName, but having configued to use contracts
+      AmbienceHub.RestoreValuesFrom(new Dictionary<string, string>());
+
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldThrowOnUnknownContract1() {
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeAllExposedAmbientFieldInstances();
+        }
+      );
+
+      AmbienceHub.RestoreValuesFrom(new Dictionary<string, string>(),"another-contract");
+
+    }
+
+    [TestMethod(), ExpectedException(typeof(Exception))]
+    public void AmbienceHub_ShouldThrowOnUnknownContract2() {
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeAllExposedAmbientFieldInstances();
+        }
+      );
+
+      AmbienceHub.CaptureCurrentValuesAsDump("another-contract");
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_ShouldEvaluateContractWhenCapturing() {
+
+      AmbientField _ExposedFieldA = new AmbientField("ExposedFieldA", true);
+      AmbientField _ExposedFieldB = new AmbientField("ExposedFieldB", true);
+      AmbientField _NotExposedField = new AmbientField("NotExposedField", false);
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeExposedAmbientFieldInstances("NotExposedField", "ExposedFieldA");
+        }
+      );
+
+      _ExposedFieldA.Value = "AAA"; //should be captured
+      _ExposedFieldB.Value = "BBB";  //should not be captured, because it wasnt included by the contract
+      _NotExposedField.Value = "secret"; //included by the contract, but should not be captured, because it is not exposed
+
+      var snapshot = new Dictionary<string, string>();
+      AmbienceHub.CaptureCurrentValuesTo(snapshot, "my-contract");
+
+      Assert.AreEqual(1, snapshot.Count);
+      Assert.AreEqual("ExposedFieldA", snapshot.Keys.Single());
+
+    }
+
+    [TestMethod()]
+    public void AmbienceHub_ShouldEvaluateContractWhenRestoring() {
+
+      AmbientField _ExposedFieldA = new AmbientField("ExposedFieldA", true);
+      AmbientField _ExposedFieldB = new AmbientField("ExposedFieldB", true);
+      AmbientField _NotExposedField = new AmbientField("NotExposedField", false);
+
+      AmbienceHub.DefineFlowingContract(
+        "my-contract",
+        (contract) => {
+          contract.IncludeExposedAmbientFieldInstances("NotExposedField", "ExposedFieldA", "UnknownFieldToPrestage");
+        }
+      );
+
+      _ExposedFieldA.Value = "AAA"; //should be restored
+      _ExposedFieldB.Value = "BBB";  //should not be restored, because it wasnt included by the contract
+      _NotExposedField.Value = "secret"; //included by the contract, but should not be restored, because it is not exposed
+
+      var snapshot = new Dictionary<string, string>();
+      snapshot.Add("ExposedFieldA", "NEW-A");
+      snapshot.Add("ExposedFieldB", "NEW-B");
+      snapshot.Add("NotExposedField", "overwritten-secret");
+      snapshot.Add("UnknownFieldToPrestage", "x");
+
+      AmbienceHub.RestoreValuesFrom(snapshot, "my-contract");
+
+      Assert.AreEqual("NEW-A",_ExposedFieldA.Value);
+      Assert.AreEqual("BBB",_ExposedFieldB.Value);
+      Assert.AreEqual("secret",_NotExposedField.Value);
+
+      string prestagedValue = AmbientField.ContextAdapter.TryGetCurrentValue("UnknownFieldToPrestage");
+      Assert.AreEqual("x", prestagedValue);
+    }
+
+    [TestMethod()]
+    public void AmbientField_ShouldResetPrestagedValuesIfNotExposed() {
+
+      var snapshot = new Dictionary<string, string>();
+      snapshot.Add("UnknownFieldThatWontBeExposed", "isFromOutside");
+
+      AmbienceHub.RestoreValuesFrom(snapshot);
+
+      string stagedValue = AmbientField.ContextAdapter.TryGetCurrentValue("UnknownFieldThatWontBeExposed");
+      Assert.AreEqual("isFromOutside", stagedValue);
+
+      var fieldInstance = new AmbientField("UnknownFieldThatWontBeExposed", false);
+
+      Assert.AreEqual(null, fieldInstance.Value);
+
+    }
+
+    [TestMethod()]
+    public void AmbientField_ShouldNotResetPrestagedValuesIfExposed() {
+
+      var snapshot = new Dictionary<string, string>();
+      snapshot.Add("UnknownFieldThatWillBeExposed", "isFromOutside");
+
+      AmbienceHub.RestoreValuesFrom(snapshot);
+
+      string stagedValue = AmbientField.ContextAdapter.TryGetCurrentValue("UnknownFieldThatWillBeExposed");
+      Assert.AreEqual("isFromOutside", stagedValue);
+
+      var fieldInstance = new AmbientField("UnknownFieldThatWillBeExposed", true);
+
+      Assert.AreEqual("isFromOutside", fieldInstance.Value);
 
     }
 

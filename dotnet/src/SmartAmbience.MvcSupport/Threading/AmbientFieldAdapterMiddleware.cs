@@ -66,7 +66,6 @@ namespace Microsoft.AspNetCore {
 
       }
       finally {
-        //TODO: context terminating raisen!
         if (context != null) {
           _ContextAdapter.RaiseTerminate();
         }
