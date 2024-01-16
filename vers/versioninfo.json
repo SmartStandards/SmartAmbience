@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.0.0",
-  "currentVersionWithSuffix": "2.0.0",
+  "currentVersion": "2.0.1",
+  "currentVersionWithSuffix": "2.0.1",
   "releaseType": "official",
-  "previousVersion": "1.2.0",
-  "changeGrade": "major",
+  "previousVersion": "2.0.0",
+  "changeGrade": "patch",
   "currentMajor": 2,
   "currentMinor": 0,
-  "currentPatch": 0,
-  "versionDateInfo": "2023-11-26",
-  "versionTimeInfo": "14:20:52",
-  "versionNotes": "- we have made a **Breaking Change** by adjusting the namespace to 'DistributedDataFlow' in order with come signature changes\n- added the new Feature of 'FlowingContracts' to filter the set of included data when capturing or restoring\n"
+  "currentPatch": 1,
+  "versionDateInfo": "2024-01-16",
+  "versionTimeInfo": "11:54:23",
+  "versionNotes": "- adopted small adjustments (internal naming) from Vodi\n"
 }

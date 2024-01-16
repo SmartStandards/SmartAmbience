@@ -8,7 +8,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* adopted small adjustments (internal naming) from Vodi
+*(none)*
+
+
+
+## v 2.0.1
+released **2024-01-16**, including:
+ - adopted small adjustments (internal naming) from Vodi
 
 
 
