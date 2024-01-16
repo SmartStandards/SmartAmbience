@@ -5,11 +5,11 @@ using System.Linq;
 namespace System.Threading {
 
   [TestClass()]
-  public partial class AmbientFieldTests {
+  public class AmbientFieldTests {
 
     private static AmbientField _AmbientField = new AmbientField("AmbientField");
 
-    private static AmbientField _WriteOnceAmbientField = new AmbientField("WriteOnceAmbientField", true);
+    private static AmbientField _SealedAmbientField = new AmbientField("SealedAmbientField", true);
 
     private static AmbientField _TemporaryBranchTestField = new AmbientField("TemporaryBranchTestField");
 
@@ -57,67 +57,75 @@ namespace System.Threading {
       // By default (no constructor parameter), it's not an "ExposedField"
 
       Assert.IsFalse(AmbientField.ExposedInstances.Keys.Contains("AmbientField"));
-
     }
 
     [TestMethod()]
-    public void AmbientField_WriteOnceAndExposed_ShouldWorkAsExpected() {
-
-      Assert.IsNull(_WriteOnceAmbientField.Value);
-
-      // Although we set the RootValueIsWriteOnce state in advance...
-
-      _WriteOnceAmbientField.RootValueIsWriteOnce = true;
-
-      // ... it should be possible to set a value once..
-
-      _WriteOnceAmbientField.Value = "Highlander";
-
-      Assert.AreEqual("Highlander", _WriteOnceAmbientField.Value);
-
-      // ... but not twice - the 2nd time setting the value should throw an Exception...
-
+    public void AmbientField_SealingAndExposed_ShouldWorkAsExpected() {
       Exception caughtException = null;
 
+      Assert.IsNull(_SealedAmbientField.Value);
+
+      // Sealing before setting a value should throw an Exception
+
+      Assert.AreEqual("(NotPresent)", _SealedAmbientField.ContextValueIsSealed);
+
       try {
-        _WriteOnceAmbientField.Value = "Es kann nur einen geben.";
+        _SealedAmbientField.SealContextValue();
       }
       catch (Exception ex) {
         caughtException = ex;
       }
 
-      Assert.AreEqual($"Root value of \"WriteOnceAmbientField\" has already been set to \"Highlander\" and cannot be changed to \"Es kann nur einen geben.\"!", caughtException.Message);
+      Assert.AreEqual($"Context value for \"{_SealedAmbientField.Key}\" cannot be sealed, because it's null!", caughtException.Message);
 
-      // setting the same value is allowed
+      // Setting a value and sealing it afterwards should work...
 
-      _WriteOnceAmbientField.Value = "Highlander";
+      _SealedAmbientField.Value = "Highlander";
 
-      // unsetting the ReadOnly should allow further changes:
+      Assert.AreEqual("Highlander", _SealedAmbientField.Value);
 
-      _WriteOnceAmbientField.RootValueIsWriteOnce = false;
+      _SealedAmbientField.SealContextValue();
 
-      _WriteOnceAmbientField.Value = "oder auch nicht.";
+      Assert.AreEqual("True", _SealedAmbientField.ContextValueIsSealed);
+
+      // ... trying to change the value should throw an Exception...
+
+      try {
+        _SealedAmbientField.Value = "Es kann nur einen geben.";
+      }
+      catch (Exception ex) {
+        caughtException = ex;
+      }
+
+      Assert.AreEqual($"Sealed context value for \"SealedAmbientField\" has already been set to \"Highlander\" and cannot be changed to \"Es kann nur einen geben.\"!", caughtException.Message);
+
+      // ... the value should not have changed ...
+
+      Assert.AreEqual("Highlander", _SealedAmbientField.Value);
+
+      // ... setting the same value is allowed (no Exception):
+
+      _SealedAmbientField.Value = "Highlander";
 
       // "ExposedField=Ture" should appear in ExposedInstances
 
-      Assert.IsTrue(AmbientField.ExposedInstances.Keys.Contains("WriteOnceAmbientField"));
-
+      Assert.IsTrue(AmbientField.ExposedInstances.Keys.Contains("SealedAmbientField"));
     }
 
     [TestMethod()]
     public void AmbientField_InvokeUnderTemporaryBranch_ShouldWorkAsExpected() {
-
       _TemporaryBranchTestField.Value = "OriginalValue";
 
       Exception caughtException = null;
 
       try {
-
-        _TemporaryBranchTestField.InvokeUnderTemporaryBranch("OverriddenValue", () => {
+        _TemporaryBranchTestField.InvokeUnderTemporaryBranch("OverriddenValue", () =>
+        {
           Assert.AreEqual("OverriddenValue", _TemporaryBranchTestField.Value);
-          var zero = default(int);
-          int boom = 1 / zero;
-        });
+          int zero = 0;
+          int boom = (1 / zero);
+        }
+);
       }
       catch (Exception ex) {
         caughtException = ex;
@@ -126,12 +134,10 @@ namespace System.Threading {
       Assert.AreEqual(typeof(DivideByZeroException), caughtException.GetType());
 
       Assert.AreEqual("OriginalValue", _TemporaryBranchTestField.Value);
-
     }
 
     [TestMethod()]
     public void AmbientField_InjectingPreStagedValue_ShouldWorkAsExpected() {
-
       AmbientField.InjectPreStagedValue("AmbientFieldWithPreStagedValue", "InjectedDummyValue");
 
       _AmbientFieldWithPreStagedValue = new AmbientField("AmbientFieldWithPreStagedValue", true);
@@ -148,19 +154,16 @@ namespace System.Threading {
       }
 
       Assert.IsTrue(caughtException.Message.IndexOf("same key") >= 0);
-
     }
 
     [TestMethod()]
     public void AmbientField_ContextAdapterNull_ShouldHaveSpecifiedErrorHandling() {
-
       IAmbienceToSomeContextAdapter rescuedContextAdapter = AmbientField.TestApi.DirectContextAdapter;
 
       try {
-
         AmbientField.TestApi.DirectContextAdapter = null;
 
-        var myAmbientField = new AmbientField("ErrorHandlingTestAmbientField");
+        AmbientField myAmbientField = new AmbientField("ErrorHandlingTestAmbientField");
 
         // Constructor should not throw an exception although ContextAdapter is null...
 
@@ -185,7 +188,6 @@ namespace System.Threading {
         Assert.IsTrue(caughtException.Message.IndexOf("must be initialized before using") >= 0);
       }
       finally {
-
         AmbientField.TestApi.DirectContextAdapter = rescuedContextAdapter;
       }
 

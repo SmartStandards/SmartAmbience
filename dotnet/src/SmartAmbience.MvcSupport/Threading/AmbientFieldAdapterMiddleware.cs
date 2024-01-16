@@ -7,7 +7,14 @@ namespace Microsoft.AspNetCore {
   public class AmbientFieldAdapterMiddleware {
 
     private class AmbientFieldToHttpContextAdapter : IAmbienceToSomeContextAdapter {
+
       public event CurrentContextIsTerminatingEventHandler CurrentContextIsTerminating;
+
+      public bool IsUsable {
+        get {
+          return (this.CurrentHttpContext != null);
+        }
+      }
 
       public void SetCurrentValue(string key, string value) {
         var ctx = this.CurrentHttpContext;

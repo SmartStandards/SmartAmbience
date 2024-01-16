@@ -12,13 +12,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\PriorityList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\AmbienceHub.AmbientFieldWireup.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceHub.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\AmbienceHub.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowSideChannelAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowBackChannelAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceToAppDomainAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.DebugInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.TestApi.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\IAmbienceToSomeContextAdapter.cs" />
   </ItemGroup>
 </Project>

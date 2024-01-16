@@ -9,6 +9,11 @@ namespace System.Threading {
   public partial interface IAmbienceToSomeContextAdapter {
 
     /// <summary>
+    ///  Teilt mit, ob der Context z.Zt. benutzbar ist - d.h. SetCurrentValue() und TryGetCurrentValue() ohne Exceptions aufrufbar sind.
+    /// </summary>
+    bool IsUsable { get; }
+
+    /// <summary>
     ///   Diese Methode muss ein Key-Value-Paar in einem ambience-container hinterlegen
     /// </summary>
     /// <param name="key">
@@ -30,8 +35,6 @@ namespace System.Threading {
     ///   Dieses muss hier durchgereicht werden.
     ///   Und: Der hinterlegte Wert muss zum Zeitpunkt dieses Events noch aus dem Ambience-Container auslesbar sein.
     /// </remarks>
-    //event CurrentContextIsTerminatingEventHandler CurrentContextIsTerminating;
-
     event CurrentContextIsTerminatingEventHandler CurrentContextIsTerminating;
     
   }

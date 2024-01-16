@@ -5,6 +5,12 @@ namespace System.Threading {
   public class AmbienceToAppdomainAdapter : IAmbienceToSomeContextAdapter {
 
     private static ConcurrentDictionary<string, string> _RootValuesByKey = new ConcurrentDictionary<string, string>();
+    
+    public bool IsUsable {
+      get {
+        return true;
+      }
+    }
 
     public event CurrentContextIsTerminatingEventHandler CurrentContextIsTerminating;
 
