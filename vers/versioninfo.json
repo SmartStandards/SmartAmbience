@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.0.1",
-  "currentVersionWithSuffix": "2.0.1",
+  "currentVersion": "2.1.0",
+  "currentVersionWithSuffix": "2.1.0",
   "releaseType": "official",
-  "previousVersion": "2.0.0",
-  "changeGrade": "patch",
+  "previousVersion": "2.0.1",
+  "changeGrade": "minor",
   "currentMajor": 2,
-  "currentMinor": 0,
-  "currentPatch": 1,
-  "versionDateInfo": "2024-01-16",
-  "versionTimeInfo": "11:54:23",
-  "versionNotes": "- adopted small adjustments (internal naming) from Vodi\n"
+  "currentMinor": 1,
+  "currentPatch": 0,
+  "versionDateInfo": "2024-04-05",
+  "versionTimeInfo": "12:15:12",
+  "versionNotes": "- added helper class to build 'Scoped-Singletons' (new Feature)\n"
 }

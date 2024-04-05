@@ -8,7 +8,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* added helper class to build 'Scoped-Singletons' (**new Feature**)
+*(none)*
+
+
+
+## v 2.1.0
+released **2024-04-05**, including:
+ - added helper class to build 'Scoped-Singletons' (**new Feature**)
 
 
 
