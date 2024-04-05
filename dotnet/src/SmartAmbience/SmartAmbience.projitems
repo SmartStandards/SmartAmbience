@@ -18,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowBackChannelAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceToAppDomainAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Threading\Singleton%271.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.DebugInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.TestApi.cs" />

@@ -8,7 +8,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+* added helper class to build 'Scoped-Singletons' (**new Feature**)
 
 
 
