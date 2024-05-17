@@ -8,7 +8,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+* small Fix: against null-ref Exception when setting null as value into AmbientField.ContextAdapter property
 
 
 

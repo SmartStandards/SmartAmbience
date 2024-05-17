@@ -17,18 +17,18 @@ namespace System.Threading {
     private AsyncLocal<string> _InnerAsyncLocal = new AsyncLocal<string>();
 
     /// <summary>
-    ///     '''   Creates a new instance of an AmbientField. 
-    ///     '''   Optionally, registers it to the ExposedInstances catalog.
-    ///     ''' </summary>
-    ///     ''' <param name="name">
-    ///     '''   The name of the field (best practice is to use the same name here and for the field that is holding the AmbientField).
-    ///     '''   The name will be used as (part of the) key when storing the value in the external fallback context.
-    ///     '''   The name might also be used when exposed (in flowing scenarios) - in this case it should be globally unique.
-    ///     ''' </param>
-    ///     ''' <param name="exposedInstance">
-    ///     '''   Tags the AmbientField as "exposed". It will be registered in the ExposedInstances catalog.
-    ///     '''   The intended purpose is flowing: Exposed AmbientFields can be collected by a flowing engine (to be flowed accross web service hops).
-    ///     ''' </param>
+    ///   Creates a new instance of an AmbientField. 
+    ///   Optionally, registers it to the ExposedInstances catalog.
+    /// </summary>
+    /// <param name="name">
+    ///   The name of the field (best practice is to use the same name here and for the field that is holding the AmbientField).
+    ///   The name will be used as (part of the) key when storing the value in the external fallback context.
+    ///   The name might also be used when exposed (in flowing scenarios) - in this case it should be globally unique.
+    /// </param>
+    /// <param name="exposedInstance">
+    ///   Tags the AmbientField as "exposed". It will be registered in the ExposedInstances catalog.
+    ///   The intended purpose is flowing: Exposed AmbientFields can be collected by a flowing engine (to be flowed accross web service hops).
+    /// </param>
     public AmbientField(string name, bool exposedInstance = false) {
       Name = name;
 
@@ -54,12 +54,12 @@ namespace System.Threading {
     }
 
     /// <summary>
-    ///     '''   Throws an exception if the context adapter currently cannot be used to store/fetch the value.
-    ///     ''' </summary>
-    ///     ''' <remarks>
-    ///     '''   This can be called before getting/setting values to ensure that the value does not accidentally go into the
-    ///     '''   inner long living value store. This is recommended in code that is executed in a request lifetime scope.
-    ///     ''' </remarks>
+    ///   Throws an exception if the context adapter currently cannot be used to store/fetch the value.
+    /// </summary>
+    /// <remarks>
+    ///   This can be called before getting/setting values to ensure that the value does not accidentally go into the
+    ///   inner long living value store. This is recommended in code that is executed in a request lifetime scope.
+    /// </remarks>
     public void AssertLongLivingValueIsNotUsed() {
       this.AssertContextAdapterIsSet();
 
@@ -111,28 +111,35 @@ namespace System.Threading {
     }
 
     /// <summary>
-    ///     '''   The adapter for storing the value in an external fallback context depending upon the hosting technology.
-    ///     ''' </summary>
-    ///     ''' <remarks>
-    ///     '''   This must be initialized before any AmbientField can be used.
-    ///     ''' </remarks>
+    ///  The adapter for storing the value in an external fallback context depending upon the hosting technology.
+    /// </summary>
+    /// <remarks>
+    ///   this must be initialized before any AmbientField can be used.
+    /// </remarks>
     public static IAmbienceToSomeContextAdapter ContextAdapter {
       get {
         return _ContextAdapter;
       }
       set {
-        if ((_ContextAdapter != null))
-          throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().Name}\" and cannot be changed to \"{value.GetType().Name}\"!");
-        _ContextAdapter = value;
+        if ((_ContextAdapter == null)) {
+          _ContextAdapter = value;
+          return;
+        }
+        if ((value == null)) {
+          throw new InvalidOperationException($"{nameof(ContextAdapter)} cannot be set to back null!");
+        }
+        if ((value.GetType() != _ContextAdapter.GetType())) {
+          throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().FullName}\" and cannot be changed to \"{value.GetType().FullName}\"!");
+        }
       }
     }
 
     /// <returns>
-    ///     '''   (ContextAdapterIsNull)
-    ///     '''   (ContextAdapterIsNotUsable)
-    ///     '''   (NotPresent) - if the ....IsSealed key/value is not present in the _ContextAdapter (= SealContextValue() was never called for that current context)
-    ///     '''   True - It's sealed.
-    ///     ''' </returns>
+    ///  (ContextAdapterIsNull)
+    ///  (ContextAdapterIsNotUsable)
+    ///  (NotPresent) - if the ....IsSealed key/value is not present in the _ContextAdapter (= SealContextValue() was never called for that current context)
+    ///  True - It's sealed.
+    /// </returns>
     public string ContextValueIsSealed {
       get {
         if ((_ContextAdapter == null))
@@ -157,31 +164,31 @@ namespace System.Threading {
     }
 
     /// <summary>
-    ///     '''   Normally, this is a key string built from "{Name}'{HashNumber}", which is used as key for the external fallback context.
-    ///     '''   The HashNumber avoids key collisions to entries from 3rd party components, that may exist in the external fallback context.
-    ///     '''   For "ExposedInstances", the key ist just "{Name}" - otherwise it would be impossible to inject pre staged values 
-    ///     '''   (because this would happen before the hash number is even generated).
-    ///     ''' </summary>
+    ///  Normally, this is a key string built from "{Name}'{HashNumber}", which is used as key for the external fallback context.
+    ///  The HashNumber avoids key collisions to entries from 3rd party components, that may exist in the external fallback context.
+    ///  For "ExposedInstances", the key ist just "{Name}" - otherwise it would be impossible to inject pre staged values 
+    ///  (because this would happen before the hash number is even generated).
+    /// </summary>
     public string Key { get; }
 
     /// <summary>
-    ///     '''   Must be set via constructor parameter. See documentation there.
-    ///     ''' </summary>
+    ///  Must be set via constructor parameter. See documentation there.
+    /// </summary>
     public string Name { get; }
 
     public Action<string> OnTerminatingMethod { get; set; }
 
     /// <summary>
-    ///     '''   Gets or sets the ambient value.
-    ///     ''' </summary>
-    ///     ''' <returns>
-    ///     '''   Nothing, if the value was never set.
-    ///     '''   If you recieve nothing, although you surely set a value, this is a bug due to a not properly working fallback context.
-    ///     ''' </returns>
-    ///     ''' <remarks>
-    ///     '''   You cannot set null as value, because null is reserved for 'never set' 
-    ///     '''   (and also, we cannot assume that the external fallback context is supporting null as value).
-    ///     ''' </remarks>
+    ///  Gets or sets the ambient value.
+    /// </summary>
+    /// <returns>
+    ///  Nothing, if the value was never set.
+    ///  If you recieve nothing, although you surely set a value, this is a bug due to a not properly working fallback context.
+    /// </returns>
+    /// <remarks>
+    ///  You cannot set null as value, because null is reserved for 'never set' 
+    ///  (and also, we cannot assume that the external fallback context is supporting null as value).
+    /// </remarks>
     public string Value {
       get {
         this.AssertContextAdapterIsSet();
