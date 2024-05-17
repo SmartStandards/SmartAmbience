@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.1.0",
-  "currentVersionWithSuffix": "2.1.0",
+  "currentVersion": "2.1.1",
+  "currentVersionWithSuffix": "2.1.1",
   "releaseType": "official",
-  "previousVersion": "2.0.1",
-  "changeGrade": "minor",
+  "previousVersion": "2.1.0",
+  "changeGrade": "patch",
   "currentMajor": 2,
   "currentMinor": 1,
-  "currentPatch": 0,
-  "versionDateInfo": "2024-04-05",
-  "versionTimeInfo": "12:15:12",
-  "versionNotes": "- added helper class to build 'Scoped-Singletons' (new Feature)\n"
+  "currentPatch": 1,
+  "versionDateInfo": "2024-05-17",
+  "versionTimeInfo": "09:43:06",
+  "versionNotes": "- small Fix: against null-ref Exception when setting null as value into AmbientField.ContextAdapter property\n"
 }
