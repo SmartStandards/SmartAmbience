@@ -12,13 +12,6 @@ This files contains a version history including all changes relevant for semanti
 
 
 
-## v 2.3.0
-released **2025-01-17**, including:
- - **new Feature**: added Target for .NET4.6.2 instead of .NET4.6.1
- - **new Feature**: added Target for .NET8 instead of .NET5
-
-
-
 ## v 2.2.0
 released **2025-01-17**, including:
  - **new Feature**: added support, for null-values as regular payload for ambient-fields
