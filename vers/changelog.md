@@ -8,7 +8,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* **new Feature**: added support, for null-values as regular payload for ambient-fields
+*(none)*
+
+
+
+## v 2.2.0
+released **2025-01-17**, including:
+ - **new Feature**: added support, for null-values as regular payload for ambient-fields
 
 
 

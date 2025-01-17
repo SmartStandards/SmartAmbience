@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.1.1",
-  "currentVersionWithSuffix": "2.1.1",
+  "currentVersion": "2.2.0",
+  "currentVersionWithSuffix": "2.2.0",
   "releaseType": "official",
-  "previousVersion": "2.1.0",
-  "changeGrade": "patch",
+  "previousVersion": "2.1.1",
+  "changeGrade": "minor",
   "currentMajor": 2,
-  "currentMinor": 1,
-  "currentPatch": 1,
-  "versionDateInfo": "2024-05-17",
-  "versionTimeInfo": "09:43:06",
-  "versionNotes": "- small Fix: against null-ref Exception when setting null as value into AmbientField.ContextAdapter property\n"
+  "currentMinor": 2,
+  "currentPatch": 0,
+  "versionDateInfo": "2025-01-17",
+  "versionTimeInfo": "12:56:07",
+  "versionNotes": "- new Feature: added support, for null-values as regular payload for ambient-fields\n"
 }
