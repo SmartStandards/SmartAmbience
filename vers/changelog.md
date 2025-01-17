@@ -8,11 +8,16 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* **new Feature**: added Target for .NET8 instead of .NET5
+*(none)*
 
-* **new Feature**: added Target for .NET4.6.2 instead of .NET4.6.1
 
-  
+
+## v 2.3.0
+released **2025-01-17**, including:
+ - **new Feature**: added Target for .NET4.6.2 instead of .NET4.6.1
+ - **new Feature**: added Target for .NET8 instead of .NET5
+
+
 
 ## v 2.2.0
 released **2025-01-17**, including:
