@@ -52,7 +52,9 @@ namespace System.Threading {
         caughtException = ex;
       }
 
-      Assert.AreEqual($"Null can not be carried as value for \"AmbientField\"!", caughtException.Message);
+      //Assert.AreEqual($"Null can not be carried as value for \"AmbientField\"!", caughtException.Message);
+      Assert.AreEqual(null, caughtException);
+      Assert.AreEqual(null, _AmbientField.Value);
 
       // By default (no constructor parameter), it's not an "ExposedField"
 
@@ -76,7 +78,7 @@ namespace System.Threading {
         caughtException = ex;
       }
 
-      Assert.AreEqual($"Context value for \"{_SealedAmbientField.Key}\" cannot be sealed, because it's null!", caughtException.Message);
+      Assert.AreEqual($"Context value for \"{_SealedAmbientField.Key}\" cannot be sealed, because it does not exist!", caughtException.Message);
 
       // Setting a value and sealing it afterwards should work...
 

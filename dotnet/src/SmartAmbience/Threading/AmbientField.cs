@@ -14,6 +14,9 @@ namespace System.Threading {
 
     private string _LongLivingValue;
 
+    ///when we get null to be stored as explicit payload
+    internal const string MagicValueForNull = "~NULL~";
+
     private AsyncLocal<string> _InnerAsyncLocal = new AsyncLocal<string>();
 
     /// <summary>
@@ -84,6 +87,9 @@ namespace System.Threading {
       if ((!_ContextAdapter.IsUsable))
         throw new InvalidOperationException("Pre-staging failed, because ContextAdapter is currently not usable!");
 
+      if(value == null) {
+        value = MagicValueForNull;
+      }
       _ContextAdapter.SetCurrentValue(name, value);
     }
 
@@ -105,7 +111,7 @@ namespace System.Threading {
       string contextValue = _ContextAdapter.TryGetCurrentValue(Key);
 
       if ((contextValue == null))
-        throw new InvalidOperationException($"Context value for \"{Key}\" cannot be sealed, because it's null!");
+        throw new InvalidOperationException($"Context value for \"{Key}\" cannot be sealed, because it does not exist!");
 
       _ContextAdapter.SetCurrentValue(Key + ".IsSealed", "True");
     }
@@ -210,8 +216,13 @@ namespace System.Threading {
 
         _DebugInfo.AsyncLocalValueDuringGet = asyncLocalValue;
 
-        if ((asyncLocalValue != null))
+        if ((asyncLocalValue != null)) {
+          if (asyncLocalValue == MagicValueForNull) {
+            return null;
+          }
           return asyncLocalValue;
+        }
+
         else if ((_ContextAdapter.IsUsable)) {
 
           // Der AsyncLocal-Context ist zwischenzeitlich verloren gegangen, wir müssen ihn wiederherstellen...
@@ -222,10 +233,16 @@ namespace System.Threading {
           // (wir erinnern uns: Bei Sub-Threads versagt oft der Value aus dem ContextAdapter - z.B. HttpContext.Current.Value liefert als Value null.
           // der Context.Current selbst ist dabei nicht null).
 
+          if (contextValue == MagicValueForNull) {
+            return null;
+          }
           return contextValue;
         }
         else {
           _InnerAsyncLocal.Value = _LongLivingValue;
+          if(_LongLivingValue  == MagicValueForNull) {
+            return null;
+          }
           return _LongLivingValue;
         }
       }
@@ -235,8 +252,10 @@ namespace System.Threading {
         // Null cannot be used because AsnycLocal.Value returns null when it was lost
         // - so we cannot distinguish that accidental null from an intentional null
 
-        if ((value == null))
-          throw new ArgumentException($"Null can not be carried as value for \"{Name}\"!");
+        if (value == null) {
+          //throw new ArgumentException($"Null can not be carried as value for \"{Name}\"!");
+          value = MagicValueForNull;
+        }
 
         if ((this.ContextValueIsSealed == "True")) {
 
@@ -265,6 +284,9 @@ namespace System.Threading {
 
       if ((OnTerminatingMethod != null)) {
         string dyingValue = AmbientField.ContextAdapter.TryGetCurrentValue(Name);
+        if (dyingValue != MagicValueForNull) {
+          dyingValue = null;
+        }
         OnTerminatingMethod.Invoke(dyingValue);
       }
     }

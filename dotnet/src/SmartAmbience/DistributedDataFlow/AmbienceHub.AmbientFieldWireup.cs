@@ -38,7 +38,7 @@ namespace DistributedDataFlow {
 
     private static void RestoreAmbientFields(FlowingContractDefinition contract, IEnumerable<KeyValuePair<string, string>> sourceToRestore) {
       
-      if (AmbientField.ContextAdapter == null) {
+      if (AmbientField.ContextAdapter == null || !AmbientField.ContextAdapter.IsUsable) {
         return;
       }
 
@@ -59,7 +59,7 @@ namespace DistributedDataFlow {
           if (!restored) {
             //prestage value
             Debug.WriteLine($"{nameof(AmbienceHub)} staging value '{entryToRestore.Value}' for AmbientField '{entryToRestore.Key}'");
-            AmbientField.ContextAdapter.SetCurrentValue(entryToRestore.Key, entryToRestore.Value);
+            AmbientField.InjectPreStagedValue(entryToRestore.Key, entryToRestore.Value);
           }
 
         }
