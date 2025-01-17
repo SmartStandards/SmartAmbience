@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C5272353-5
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience", "src\SmartAmbience\SmartAmbience.shproj", "{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net461", "src\SmartAmbience.net461\SmartAmbience.net461.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net462", "src\SmartAmbience.net462\SmartAmbience.net462.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.net6.0", "src\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj", "{FA5ADB71-CA2D-4293-B22F-47E009980CF6}"
 EndProject
@@ -30,7 +30,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience.MvcSupport", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.MvcSupport.net6.0", "src\SmartAmbience.MvcSupport.net6.0\SmartAmbience.MvcSupport.net6.0.csproj", "{750CCBA1-1C77-497F-B816-CEB98EC12BE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net461", "src\SmartAmbience.MvcSupport.net461\SmartAmbience.MvcSupport.net461.csproj", "{E106EE8A-87A2-4423-8A7D-93DFC12AB396}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net462", "src\SmartAmbience.MvcSupport.net462\SmartAmbience.MvcSupport.net462.csproj", "{E106EE8A-87A2-4423-8A7D-93DFC12AB396}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net8.0", "src\SmartAmbience.MvcSupport.net8.0\SmartAmbience.MvcSupport.net8.0.csproj", "{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}"
 EndProject
