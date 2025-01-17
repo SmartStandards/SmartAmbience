@@ -6,6 +6,7 @@ namespace System.Threading {
   ///    Contains a named string value that is stored AsyncLocal and in an external short living context ("Operation", "Request", ...) as fallback.
   /// </summary>
   public partial class AmbientField {
+
     private static IAmbienceToSomeContextAdapter _ContextAdapter;
 
     private static Dictionary<string, AmbientField> _ExposedInstances = new Dictionary<string, AmbientField>();
@@ -33,12 +34,13 @@ namespace System.Threading {
     ///   The intended purpose is flowing: Exposed AmbientFields can be collected by a flowing engine (to be flowed accross web service hops).
     /// </param>
     public AmbientField(string name, bool exposedInstance = false) {
-      Name = name;
+      this.Name = name;
 
-      if ((!exposedInstance))
-        Key = name + "'" + this.GetHashCode().ToString();
+      if (!exposedInstance) {
+        this.Key = name + "'" + this.GetHashCode().ToString();
+      }
       else {
-        Key = name;
+        this.Key = name;
         _ExposedInstances.Add(name, this);
 
         // "Pre-Staging": Der Wert des AmbientField kann zeitlich vor dessen Konstruktor bereits hinterlegt worden sein.
@@ -47,8 +49,8 @@ namespace System.Threading {
 
         // In dieser Konstellation, muss der hinterlegte Wert ins InnerAsyncLocal synchronisiert werden:
 
-        if ((_ContextAdapter != null && _ContextAdapter.IsUsable)) {
-          string preStagedValue = AmbientField.ContextAdapter.TryGetCurrentValue(Key);
+        if (_ContextAdapter != null && _ContextAdapter.IsUsable) {
+          string preStagedValue = AmbientField.ContextAdapter.TryGetCurrentValue(this.Key);
 
           if ((preStagedValue != null))
             _InnerAsyncLocal.Value = preStagedValue;
@@ -66,26 +68,33 @@ namespace System.Threading {
     public void AssertLongLivingValueIsNotUsed() {
       this.AssertContextAdapterIsSet();
 
-      if ((!_ContextAdapter.IsUsable))
+      if (!_ContextAdapter.IsUsable) {
         throw new Exception($"{nameof(ContextAdapter)} {_ContextAdapter.GetType().Name} is currently not usable!");
-    }
-
-    private void AssertContextAdapterIsSet() {
-      if ((_ContextAdapter == null))
-        throw new Exception($"{nameof(ContextAdapter)} must be initialized before using {Name}!");
-
-      if ((!_ContextAdapterEventHandlersAdded)) {
-        _ContextAdapter.CurrentContextIsTerminating += this.ContextAdapter_IsTerminating;
-        _ContextAdapterEventHandlersAdded = true;
       }
     }
 
-    public static void InjectPreStagedValue(string name, string value) {
-      if ((_ContextAdapter == null))
-        throw new Exception($"{nameof(ContextAdapter)} must be initialized before using {nameof(AmbientField)}!");
+    private void AssertContextAdapterIsSet() {
 
-      if ((!_ContextAdapter.IsUsable))
+      if (_ContextAdapter == null) {
+        throw new Exception($"{nameof(ContextAdapter)} must be initialized before using {this.Name}!");
+      }
+
+      if (!_ContextAdapterEventHandlersAdded) {
+        _ContextAdapter.CurrentContextIsTerminating += this.ContextAdapter_IsTerminating;
+        _ContextAdapterEventHandlersAdded = true;
+      }
+
+    }
+
+    public static void InjectPreStagedValue(string name, string value) {
+
+      if (_ContextAdapter == null) {
+        throw new Exception($"{nameof(ContextAdapter)} must be initialized before using {nameof(AmbientField)}!");
+      }
+
+      if (!_ContextAdapter.IsUsable) {
         throw new InvalidOperationException("Pre-staging failed, because ContextAdapter is currently not usable!");
+      }
 
       if(value == null) {
         value = MagicValueForNull;
@@ -108,12 +117,13 @@ namespace System.Threading {
     public void SealContextValue() {
       this.AssertLongLivingValueIsNotUsed();
 
-      string contextValue = _ContextAdapter.TryGetCurrentValue(Key);
+      string contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
 
-      if ((contextValue == null))
-        throw new InvalidOperationException($"Context value for \"{Key}\" cannot be sealed, because it does not exist!");
+      if (contextValue == null) {
+        throw new InvalidOperationException($"Context value for \"{this.Key}\" cannot be sealed, because it does not exist!");
+      }
 
-      _ContextAdapter.SetCurrentValue(Key + ".IsSealed", "True");
+      _ContextAdapter.SetCurrentValue(this.Key + ".IsSealed", "True");
     }
 
     /// <summary>
@@ -127,14 +137,14 @@ namespace System.Threading {
         return _ContextAdapter;
       }
       set {
-        if ((_ContextAdapter == null)) {
+        if (_ContextAdapter == null) {
           _ContextAdapter = value;
           return;
         }
-        if ((value == null)) {
+        if (value == null) {
           throw new InvalidOperationException($"{nameof(ContextAdapter)} cannot be set to back null!");
         }
-        if ((value.GetType() != _ContextAdapter.GetType())) {
+        if (value.GetType() != _ContextAdapter.GetType()) {
           throw new InvalidOperationException($"{nameof(ContextAdapter)} has already been set to \"{_ContextAdapter.GetType().FullName}\" and cannot be changed to \"{value.GetType().FullName}\"!");
         }
       }
@@ -148,17 +158,17 @@ namespace System.Threading {
     /// </returns>
     public string ContextValueIsSealed {
       get {
-        if ((_ContextAdapter == null))
+        if (_ContextAdapter == null) {
           return "(ContextAdapterIsNull)";
-
-        if ((!_ContextAdapter.IsUsable))
+        }
+        if (!_ContextAdapter.IsUsable) {
           return "(ContextAdapterIsNotUsable)";
+        }
+        string value = _ContextAdapter.TryGetCurrentValue(this.Key + ".IsSealed");
 
-        string value = _ContextAdapter.TryGetCurrentValue(Key + ".IsSealed");
-
-        if ((value == null))
+        if (value == null) {
           return "(NotPresent)";
-
+        }
         return value;
       }
     }
@@ -203,12 +213,13 @@ namespace System.Threading {
 
         string contextValue = null;
 
-        if ((_ContextAdapter.IsUsable)) {
-          contextValue = _ContextAdapter.TryGetCurrentValue(Key);
+        if (_ContextAdapter.IsUsable) {
+          contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
           _DebugInfo.ContextWasUsableDuringGet = true;
         }
-        else
+        else {
           _DebugInfo.ContextWasUsableDuringGet = false;
+        }
 
         _DebugInfo.ContextValueDuringGet = contextValue;
 
@@ -216,14 +227,14 @@ namespace System.Threading {
 
         _DebugInfo.AsyncLocalValueDuringGet = asyncLocalValue;
 
-        if ((asyncLocalValue != null)) {
+        if (asyncLocalValue != null) {
           if (asyncLocalValue == MagicValueForNull) {
             return null;
           }
           return asyncLocalValue;
         }
 
-        else if ((_ContextAdapter.IsUsable)) {
+        else if (_ContextAdapter.IsUsable) {
 
           // Der AsyncLocal-Context ist zwischenzeitlich verloren gegangen, wir müssen ihn wiederherstellen...
 
@@ -240,7 +251,7 @@ namespace System.Threading {
         }
         else {
           _InnerAsyncLocal.Value = _LongLivingValue;
-          if(_LongLivingValue  == MagicValueForNull) {
+          if(_LongLivingValue == MagicValueForNull) {
             return null;
           }
           return _LongLivingValue;
@@ -261,19 +272,21 @@ namespace System.Threading {
 
           // Ensure the context value is only not changed.
 
-          string contextValue = _ContextAdapter.TryGetCurrentValue(Key);
+          string contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
 
           if ((!string.IsNullOrEmpty(contextValue) && !contextValue.Equals(value)))
-            throw new InvalidOperationException($"Sealed context value for \"{Key}\" has already been set to \"{contextValue}\" and cannot be changed to \"{value}\"!"
+            throw new InvalidOperationException($"Sealed context value for \"{this.Key}\" has already been set to \"{contextValue}\" and cannot be changed to \"{value}\"!"
           );
         }
 
         // Actually store the value
 
-        if ((_ContextAdapter.IsUsable))
-          _ContextAdapter.SetCurrentValue(Key, value);
-        else
+        if (_ContextAdapter.IsUsable) {
+          _ContextAdapter.SetCurrentValue(this.Key, value);
+        }
+        else {
           _LongLivingValue = value;
+        }
 
         _InnerAsyncLocal.Value = value; // Immer setzen
       }
@@ -282,12 +295,12 @@ namespace System.Threading {
     private void ContextAdapter_IsTerminating() {
       AmbientField.ContextAdapter.CurrentContextIsTerminating -= this.ContextAdapter_IsTerminating;
 
-      if ((OnTerminatingMethod != null)) {
-        string dyingValue = AmbientField.ContextAdapter.TryGetCurrentValue(Name);
+      if (this.OnTerminatingMethod != null) {
+        string dyingValue = AmbientField.ContextAdapter.TryGetCurrentValue(this.Name);
         if (dyingValue != MagicValueForNull) {
           dyingValue = null;
         }
-        OnTerminatingMethod.Invoke(dyingValue);
+        this.OnTerminatingMethod.Invoke(dyingValue);
       }
     }
 
