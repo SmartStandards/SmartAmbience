@@ -8,9 +8,9 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+* **new Feature**: added Target für .NET8 and removed .NET5
 
-
+  
 
 ## v 2.2.0
 released **2025-01-17**, including:
