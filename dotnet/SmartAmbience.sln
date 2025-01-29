@@ -36,9 +36,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net8.0", "src\SmartAmbience.net8.0\SmartAmbience.net8.0.csproj", "{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net481", "src\SmartAmbience.MvcSupport.net481\SmartAmbience.MvcSupport.net481.csproj", "{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net48", "src\SmartAmbience.MvcSupport.net48\SmartAmbience.MvcSupport.net48.csproj", "{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net481", "src\SmartAmbience.net481\SmartAmbience.net481.csproj", "{1A231730-7721-4E13-A702-7D40849A8CC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net48", "src\SmartAmbience.net48\SmartAmbience.net48.csproj", "{1A231730-7721-4E13-A702-7D40849A8CC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
