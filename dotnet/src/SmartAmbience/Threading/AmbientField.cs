@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace System.Threading {
 
   /// <summary>
   ///    Contains a named string value that is stored AsyncLocal and in an external short living context ("Operation", "Request", ...) as fallback.
   /// </summary>
+  [DebuggerDisplay("{Name}: {Value}")]
   public partial class AmbientField {
 
     private static IAmbienceToSomeContextAdapter _ContextAdapter;

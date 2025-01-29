@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C5272353-5
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience", "src\SmartAmbience\SmartAmbience.shproj", "{CF0A161A-99BA-4F01-AF5E-16C6FCBC85AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net462", "src\SmartAmbience.net462\SmartAmbience.net462.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net461", "src\SmartAmbience.net461\SmartAmbience.net461.csproj", "{B0BA06FE-6437-4B9E-8C76-3ADFC8D191D2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.net6.0", "src\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj", "{FA5ADB71-CA2D-4293-B22F-47E009980CF6}"
 EndProject
@@ -30,11 +30,15 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SmartAmbience.MvcSupport", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartAmbience.MvcSupport.net6.0", "src\SmartAmbience.MvcSupport.net6.0\SmartAmbience.MvcSupport.net6.0.csproj", "{750CCBA1-1C77-497F-B816-CEB98EC12BE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net462", "src\SmartAmbience.MvcSupport.net462\SmartAmbience.MvcSupport.net462.csproj", "{E106EE8A-87A2-4423-8A7D-93DFC12AB396}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net461", "src\SmartAmbience.MvcSupport.net461\SmartAmbience.MvcSupport.net461.csproj", "{E106EE8A-87A2-4423-8A7D-93DFC12AB396}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net8.0", "src\SmartAmbience.MvcSupport.net8.0\SmartAmbience.MvcSupport.net8.0.csproj", "{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net8.0", "src\SmartAmbience.net8.0\SmartAmbience.net8.0.csproj", "{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.MvcSupport.net481", "src\SmartAmbience.MvcSupport.net481\SmartAmbience.MvcSupport.net481.csproj", "{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartAmbience.net481", "src\SmartAmbience.net481\SmartAmbience.net481.csproj", "{1A231730-7721-4E13-A702-7D40849A8CC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,13 +67,17 @@ Global
 		{E106EE8A-87A2-4423-8A7D-93DFC12AB396}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E106EE8A-87A2-4423-8A7D-93DFC12AB396}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A231730-7721-4E13-A702-7D40849A8CC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A231730-7721-4E13-A702-7D40849A8CC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A231730-7721-4E13-A702-7D40849A8CC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A231730-7721-4E13-A702-7D40849A8CC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,12 +93,16 @@ Global
 		{E106EE8A-87A2-4423-8A7D-93DFC12AB396} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
 		{FB2EFBEE-901F-4EC5-A994-5F3E01F4B1CB} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
 		{10E25D7F-C5C7-4117-B89A-8A6D75BB81F1} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
+		{6DFC2CB6-934E-4DFC-A58B-1394F81D6DA5} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
+		{1A231730-7721-4E13-A702-7D40849A8CC1} = {24674244-E4CB-4D13-A513-2F24C3FB13AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2F37C1D-32F0-4BF2-AAEB-46B9D8C07D23}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\SmartAmbience\SmartAmbience.projitems*{10e25d7f-c5c7-4117-b89a-8a6d75bb81f1}*SharedItemsImports = 5
+		src\SmartAmbience\SmartAmbience.projitems*{1a231730-7721-4e13-a702-7d40849a8cc1}*SharedItemsImports = 4
+		src\SmartAmbience.MvcSupport\SmartAmbience.MvcSupport.projitems*{6dfc2cb6-934e-4dfc-a58b-1394f81d6da5}*SharedItemsImports = 4
 		src\SmartAmbience.MvcSupport\SmartAmbience.MvcSupport.projitems*{750ccba1-1c77-497f-b816-ceb98ec12be5}*SharedItemsImports = 5
 		src\SmartAmbience\SmartAmbience.projitems*{b0ba06fe-6437-4b9e-8c76-3adfc8d191d2}*SharedItemsImports = 4
 		src\SmartAmbience\SmartAmbience.projitems*{cf0a161a-99ba-4f01-af5e-16c6fcbc85ae}*SharedItemsImports = 13
