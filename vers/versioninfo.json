@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.3.0",
-  "currentVersionWithSuffix": "2.3.0",
+  "currentVersion": "2.4.0",
+  "currentVersionWithSuffix": "2.4.0",
   "releaseType": "official",
-  "previousVersion": "2.2.0",
+  "previousVersion": "2.3.0",
   "changeGrade": "minor",
   "currentMajor": 2,
-  "currentMinor": 3,
+  "currentMinor": 4,
   "currentPatch": 0,
-  "versionDateInfo": "2025-01-17",
-  "versionTimeInfo": "13:37:34",
-  "versionNotes": "- new Feature: added Target for .NET4.6.2 instead of .NET4.6.1\n- new Feature: added Target for .NET8 instead of .NET5\n"
+  "versionDateInfo": "2025-01-29",
+  "versionTimeInfo": "06:40:54",
+  "versionNotes": "- new Feature: added Target for .NET4.8.1\n- new Feature: added Target for .NET8\n- removed Target for .NET5\n"
 }
