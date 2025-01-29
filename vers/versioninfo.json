@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.2.0",
-  "currentVersionWithSuffix": "2.2.0",
+  "currentVersion": "2.3.0",
+  "currentVersionWithSuffix": "2.3.0",
   "releaseType": "official",
-  "previousVersion": "2.1.1",
+  "previousVersion": "2.2.0",
   "changeGrade": "minor",
   "currentMajor": 2,
-  "currentMinor": 2,
+  "currentMinor": 3,
   "currentPatch": 0,
   "versionDateInfo": "2025-01-17",
-  "versionTimeInfo": "12:56:07",
-  "versionNotes": "- new Feature: added support, for null-values as regular payload for ambient-fields\n"
+  "versionTimeInfo": "13:37:34",
+  "versionNotes": "- new Feature: added Target for .NET4.6.2 instead of .NET4.6.1\n- new Feature: added Target for .NET8 instead of .NET5\n"
 }
