@@ -3,12 +3,11 @@ This files contains a version history including all changes relevant for semanti
 
 *(it is automatically maintained using the ['KornSW-VersioningUtil'](https://github.com/KornSW/VersioningUtil))*
 
-
-
-
 ## Upcoming Changes
 
 - Update auf MS-Test 3.0.4
+
+- Fehler in Solution-Struktur behoben
 
 ## v 2.4.0
 released **2025-01-29**, including:

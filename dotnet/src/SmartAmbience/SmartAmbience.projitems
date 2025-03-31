@@ -9,19 +9,22 @@
     <Import_RootNamespace>System</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\PriorityList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\AssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)%28internal%29\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\AmbienceHub.AmbientFieldWireup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\AmbienceHub.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowSideChannelAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowBackChannelAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractDefinition.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbienceToAppDomainAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\Singleton%271.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.DebugInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\AmbientField.TestApi.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Threading\IAmbienceToSomeContextAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbienceToAppDomainAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\Singleton'1.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.DebugInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.TestApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\IAmbienceToSomeContextAdapter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\PriorityList.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)System\" />
   </ItemGroup>
 </Project>
