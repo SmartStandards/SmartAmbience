@@ -27,7 +27,7 @@
     <OutputPath>..\..\dist\bin-net8.0\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
-    <DefineConstants>TRACE;DEBUG;NET5</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET8</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -35,7 +35,7 @@
     <DocumentationFile>..\..\dist\bin-net8.0\SmartAmbience.xml</DocumentationFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
-    <DefineConstants>TRACE;NET5</DefineConstants>
+    <DefineConstants>TRACE;NET8</DefineConstants>
   </PropertyGroup>
 
   <Import Project="..\SmartAmbience\SmartAmbience.projitems" Label="Shared" />

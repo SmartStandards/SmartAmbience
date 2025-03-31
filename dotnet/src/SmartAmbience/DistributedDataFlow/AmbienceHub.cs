@@ -1,12 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using System.Threading;
-using System;
 
 namespace DistributedDataFlow {
 
@@ -79,7 +75,7 @@ namespace DistributedDataFlow {
     ) {
 
       BindCustomEndpoint(
-        endpointName,     
+        endpointName,
         (contractName, target) => captureMethod.Invoke(target),
         (contractName, source) => restoreMethod.Invoke(source),
         assertRestorePerformanceMs,
@@ -108,8 +104,8 @@ namespace DistributedDataFlow {
       params string[] restoreAfter
     ) {
 
-      if (_EndpointAdaptersInRestoreOrder.Where((a)=> a.EndpointName.EndsWith(endpointName, StringComparison.CurrentCultureIgnoreCase)).Any()){
-        throw new Exception($"Cannot {nameof(BindCustomEndpoint)} named '{endpointName}' to the {nameof(AmbienceHub)} - this EndpointName already exists!"); 
+      if (_EndpointAdaptersInRestoreOrder.Where((a) => a.EndpointName.EndsWith(endpointName, StringComparison.CurrentCultureIgnoreCase)).Any()) {
+        throw new Exception($"Cannot {nameof(BindCustomEndpoint)} named '{endpointName}' to the {nameof(AmbienceHub)} - this EndpointName already exists!");
       }
 
       var adapter = new EndpointAdapter();
@@ -123,7 +119,7 @@ namespace DistributedDataFlow {
         _EndpointPriorities.TryDeclarePreference(higherPrioritizedEndpointName.ToLower(), endpointName.ToLower());
       }
 
-      _EndpointAdaptersInRestoreOrder = _EndpointAdaptersInRestoreOrder.Union(new EndpointAdapter [] {adapter}).OrderBy(
+      _EndpointAdaptersInRestoreOrder = _EndpointAdaptersInRestoreOrder.Union(new EndpointAdapter[] { adapter }).OrderBy(
         (ep) => _EndpointPriorities.PriorityOf(ep.EndpointName.ToLower())
       ).ToArray();
 
@@ -187,7 +183,7 @@ namespace DistributedDataFlow {
     /// which shall be used to select an explicitely defined subset of custom Endpoints and/or 
     /// AmbientFields to be included in the snapshot.
     /// </param>
-    public static void CaptureCurrentValuesTo(Action<string,string> capturingCallback, string flowingContractName) {
+    public static void CaptureCurrentValuesTo(Action<string, string> capturingCallback, string flowingContractName) {
       var alreadyCapturedKeys = new HashSet<string>();
 
       FlowingContractDefinition contract = AmbienceHub.GetFlowingContractDefinition(flowingContractName);
@@ -222,8 +218,7 @@ namespace DistributedDataFlow {
 
               ////// CAPTURE //////
               capturingCallback.Invoke(key, value);
-            }
-            else {
+            } else {
 
               ////// CAPTURE //////
               capturingCallback.Invoke(endpoint.EndpointName + "." + key, value);
@@ -271,12 +266,11 @@ namespace DistributedDataFlow {
     /// </param>
     public static void RestoreValuesFrom(IEnumerable<KeyValuePair<string, string>> sourceToRestore, string flowingContractName) {
 
-      if(sourceToRestore == null) {
+      if (sourceToRestore == null) {
         IDictionary<string, string> defaultsToRestore = new Dictionary<string, string>();
-        if(OnRestoreNullHandler != null) {
+        if (OnRestoreNullHandler != null) {
           OnRestoreNullHandler.Invoke(ref defaultsToRestore);//in default this thows an exception!      
-        }
-        else { //skips the restore!
+        } else { //skips the restore!
           return;
           // Note: this quite different from calling each endpoint with an empty set of entries
           // - here the endpoints WONT GET ANY TRIGGER!!!
@@ -302,8 +296,7 @@ namespace DistributedDataFlow {
             (e) => e.Key.StartsWith(prefixForFiltering, StringComparison.InvariantCultureIgnoreCase)
           );
 
-        }
-        else {
+        } else {
 
           filteredSource = sourceToRestore.Where(
             (e) => !e.Key.StartsWithAny(_PrefixesOfDedicatedEndpoints, StringComparison.InvariantCultureIgnoreCase)
@@ -334,12 +327,12 @@ namespace DistributedDataFlow {
     private static Dictionary<string, FlowingContractDefinition> _FlowingContracts = null;
 
     public static void DefineFlowingContract(string contractName, Action<FlowingContractDefinition> definitionMethod) {
-    
+
       //safes performance during processing
       if (contractName != contractName.ToLower()) {
         throw new ArgumentException("The name for a FlowingContract must be in lower casing!");
       }
-    
+
       if (_FlowingContracts != null && _FlowingContracts.ContainsKey(contractName)) {
         throw new ArgumentException($"A FlowingContract with name '{contractName}' already exisits!");
       }
@@ -362,8 +355,7 @@ namespace DistributedDataFlow {
           throw new Exception($"The '{nameof(AmbienceHub)}' was NOT YET configured to use FlowingContracts! see '{nameof(AmbienceHub.DefineFlowingContract)}'");
         }
         contract = FlowingContractDefinition.DefaultDefinition;
-      }
-      else {
+      } else {
         if (string.IsNullOrWhiteSpace(flowingContractName)) {
           throw new Exception($"The '{nameof(AmbienceHub)}' was configured to require a FlowingContract - please provide a flowingContractName when calling the capture method!");
         }

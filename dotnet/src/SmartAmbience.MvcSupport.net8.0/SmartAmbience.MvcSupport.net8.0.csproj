@@ -20,6 +20,7 @@
     <PackageTags>Ambience AsyncLocal Context Scopes</PackageTags>
     <PackageProjectUrl>https://github.com/SmartStandards/SmartAmbience</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SmartStandards/SmartAmbience</RepositoryUrl>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -1,8 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NuGet.Frameworks;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading;
 
@@ -108,21 +106,21 @@ namespace DistributedDataFlow {
 
       AmbienceHub.BindCustomEndpoint(
         "A",
-        (capture) => { 
+        (capture) => {
           ep1Captured = true;
           capture("a1", "Foo");
         },
-        (sourceToRestore) => {  }
+        (sourceToRestore) => { }
       );
 
       AmbienceHub.BindCustomEndpoint(
         "^AGlobalEndpoint",//this one works at root level without a prefix for the keys
-        (capture) => { 
+        (capture) => {
           ep2Captured = true;
-          capture("Global1","xxx");
-          capture("C.Global2","yyy");
+          capture("Global1", "xxx");
+          capture("C.Global2", "yyy");
         },
-        (sourceToRestore) => {  }
+        (sourceToRestore) => { }
       );
 
       AmbienceHub.BindCustomEndpoint(
@@ -132,7 +130,7 @@ namespace DistributedDataFlow {
           capture("Baz", "Baz");
           ep3Captured = true;
         },
-        (sourceToRestore) => {  }
+        (sourceToRestore) => { }
       );
 
       var buffer = new Dictionary<string, string>();
@@ -142,7 +140,7 @@ namespace DistributedDataFlow {
       Assert.IsTrue(ep2Captured);
       Assert.IsTrue(ep3Captured);
 
-      Assert.AreEqual(5,buffer.Count);
+      Assert.AreEqual(5, buffer.Count);
 
     }
 
@@ -166,8 +164,7 @@ namespace DistributedDataFlow {
 
       try {
         AmbienceHub.CaptureCurrentValuesTo(buffer);
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         catchedException = ex;
       }
 
@@ -211,8 +208,7 @@ namespace DistributedDataFlow {
 
       try {
         AmbienceHub.CaptureCurrentValuesTo(buffer);
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         catchedException = ex;
       }
 
@@ -256,8 +252,7 @@ namespace DistributedDataFlow {
 
       try {
         AmbienceHub.CaptureCurrentValuesTo(buffer);
-      }
-      catch (Exception ex) {
+      } catch (Exception ex) {
         catchedException = ex;
       }
 
@@ -279,7 +274,7 @@ namespace DistributedDataFlow {
       AmbienceHub.BindCustomEndpoint(
         "B",
         (capture) => { },
-        (sourceToRestore) => restoreLog += "b",500,
+        (sourceToRestore) => restoreLog += "b", 500,
         "A"
       );
 
@@ -315,7 +310,7 @@ namespace DistributedDataFlow {
         (sourceToRestore) => restoreLog += "f", 500
       );
 
-      var emptyDummy = new Dictionary<string,string> ();
+      var emptyDummy = new Dictionary<string, string>();
       AmbienceHub.RestoreValuesFrom(emptyDummy);
 
       Assert.AreEqual("abcdef", restoreLog);
@@ -387,12 +382,12 @@ namespace DistributedDataFlow {
       AmbienceHub.DefineFlowingContract(
         "requestchannel",
         (contract) => {
-           contract.IncludeCustomEndpoints("ComponentDiscovery");
-           contract.IncludeAllExposedAmbientFieldInstances();
-           contract.ExcludeExposedAmbientFieldInstances("AuthToken");
+          contract.IncludeCustomEndpoints("ComponentDiscovery");
+          contract.IncludeAllExposedAmbientFieldInstances();
+          contract.ExcludeExposedAmbientFieldInstances("AuthToken");
 
-           //this is a bad hack, but possible
-           grabbedDefiniton = contract;
+          //this is a bad hack, but possible
+          grabbedDefiniton = contract;
         }
       );
 
@@ -412,7 +407,7 @@ namespace DistributedDataFlow {
     [TestMethod(), ExpectedException(typeof(Exception))]
     public void AmbienceHub_ShouldRejectContractIfNotConfigured2() {
       //privde a contractName without having configued to use contracts
-      AmbienceHub.RestoreValuesFrom(new Dictionary<string,string>(),"AContract");
+      AmbienceHub.RestoreValuesFrom(new Dictionary<string, string>(), "AContract");
     }
 
     [TestMethod(), ExpectedException(typeof(Exception))]
@@ -455,7 +450,7 @@ namespace DistributedDataFlow {
         }
       );
 
-      AmbienceHub.RestoreValuesFrom(new Dictionary<string, string>(),"another-contract");
+      AmbienceHub.RestoreValuesFrom(new Dictionary<string, string>(), "another-contract");
 
     }
 
@@ -525,9 +520,9 @@ namespace DistributedDataFlow {
 
       AmbienceHub.RestoreValuesFrom(snapshot, "my-contract");
 
-      Assert.AreEqual("NEW-A",_ExposedFieldA.Value);
-      Assert.AreEqual("BBB",_ExposedFieldB.Value);
-      Assert.AreEqual("secret",_NotExposedField.Value);
+      Assert.AreEqual("NEW-A", _ExposedFieldA.Value);
+      Assert.AreEqual("BBB", _ExposedFieldB.Value);
+      Assert.AreEqual("secret", _NotExposedField.Value);
 
       string prestagedValue = AmbientField.ContextAdapter.TryGetCurrentValue("UnknownFieldToPrestage");
       Assert.AreEqual("x", prestagedValue);

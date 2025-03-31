@@ -40,8 +40,7 @@ namespace System.Threading {
 
       if (!exposedInstance) {
         this.Key = name + "'" + this.GetHashCode().ToString();
-      }
-      else {
+      } else {
         this.Key = name;
         _ExposedInstances.Add(name, this);
 
@@ -54,8 +53,7 @@ namespace System.Threading {
         if (_ContextAdapter != null && _ContextAdapter.IsUsable) {
           string preStagedValue = AmbientField.ContextAdapter.TryGetCurrentValue(this.Key);
 
-          if ((preStagedValue != null))
-            _InnerAsyncLocal.Value = preStagedValue;
+          if ((preStagedValue != null)) _InnerAsyncLocal.Value = preStagedValue;
         }
       }
     }
@@ -98,7 +96,7 @@ namespace System.Threading {
         throw new InvalidOperationException("Pre-staging failed, because ContextAdapter is currently not usable!");
       }
 
-      if(value == null) {
+      if (value == null) {
         value = MagicValueForNull;
       }
       _ContextAdapter.SetCurrentValue(name, value);
@@ -110,8 +108,7 @@ namespace System.Threading {
       try {
         _InnerAsyncLocal.Value = overridingValue;
         actionToInvoke.Invoke();
-      }
-      finally {
+      } finally {
         _InnerAsyncLocal.Value = rescuedCurrentValue;
       }
     }
@@ -218,8 +215,7 @@ namespace System.Threading {
         if (_ContextAdapter.IsUsable) {
           contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
           _DebugInfo.ContextWasUsableDuringGet = true;
-        }
-        else {
+        } else {
           _DebugInfo.ContextWasUsableDuringGet = false;
         }
 
@@ -234,9 +230,7 @@ namespace System.Threading {
             return null;
           }
           return asyncLocalValue;
-        }
-
-        else if (_ContextAdapter.IsUsable) {
+        } else if (_ContextAdapter.IsUsable) {
 
           // Der AsyncLocal-Context ist zwischenzeitlich verloren gegangen, wir müssen ihn wiederherstellen...
 
@@ -250,10 +244,9 @@ namespace System.Threading {
             return null;
           }
           return contextValue;
-        }
-        else {
+        } else {
           _InnerAsyncLocal.Value = _LongLivingValue;
-          if(_LongLivingValue == MagicValueForNull) {
+          if (_LongLivingValue == MagicValueForNull) {
             return null;
           }
           return _LongLivingValue;
@@ -285,8 +278,7 @@ namespace System.Threading {
 
         if (_ContextAdapter.IsUsable) {
           _ContextAdapter.SetCurrentValue(this.Key, value);
-        }
-        else {
+        } else {
           _LongLivingValue = value;
         }
 

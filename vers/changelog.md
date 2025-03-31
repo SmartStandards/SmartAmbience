@@ -8,9 +8,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
-
-
+- Update auf MS-Test 3.0.4
 
 ## v 2.4.0
 released **2025-01-29**, including:
