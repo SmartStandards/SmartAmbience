@@ -5,6 +5,10 @@
     <AssemblyName>SmartAmbience</AssemblyName>
     <RootNamespace>System</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.xml</DocumentationFile>
+    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <NoWarn>1701;1702;1591</NoWarn>
   </PropertyGroup>
   
   <PropertyGroup>
@@ -22,21 +26,19 @@
     <RepositoryUrl>https://github.com/SmartStandards/SmartAmbience</RepositoryUrl>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.xml</DocumentationFile>
-    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DefineConstants>TRACE;DEBUG;NET5</DefineConstants>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
+    <DefineConstants>TRACE;DEBUG;NET6</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
-    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.xml</DocumentationFile>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <NoWarn>1701;1702;1591</NoWarn>
-    <DefineConstants>TRACE;NET5</DefineConstants>
+    <DefineConstants>TRACE;NET6</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>SmartAmbience.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 
   <Import Project="..\SmartAmbience\SmartAmbience.projitems" Label="Shared" />
 

@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.DebugInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.TestApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\IAmbienceToSomeContextAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\PriorityList.cs" />
   </ItemGroup>
