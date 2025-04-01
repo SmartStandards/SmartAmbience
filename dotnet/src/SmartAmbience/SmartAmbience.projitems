@@ -20,9 +20,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.DebugInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.TestApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\IAmbienceToSomeContextAdapter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\AssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\Extensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)[Internal]\PriorityList.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\Extensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\PriorityList.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)System\" />
