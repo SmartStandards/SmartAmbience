@@ -5,9 +5,16 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-- Update auf MS-Test 3.0.4
+*(none)*
 
-- Fehler in Solution-Struktur behoben
+
+
+## v 2.4.1
+released **2025-04-01**, including:
+ - Fehler in Solution-Struktur behoben
+ - Update auf MS-Test 3.0.4
+
+
 
 ## v 2.4.0
 released **2025-01-29**, including:
