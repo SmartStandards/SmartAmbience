@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-- AssemblyInfo.cs entfernt
+*(none)*
+
+
+
+## v 2.4.2
+released **2025-04-01**, including:
+ - AssemblyInfo.cs entfernt
 
 
 
