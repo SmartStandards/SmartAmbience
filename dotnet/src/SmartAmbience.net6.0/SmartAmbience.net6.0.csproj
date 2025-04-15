@@ -40,6 +40,10 @@
     </AssemblyAttribute>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\SmartAmbience.net48\SmartStandards.Logging.cs" Link="SmartStandards.Logging.cs" />
+  </ItemGroup>
+
   <Import Project="..\SmartAmbience\SmartAmbience.projitems" Label="Shared" />
 
 </Project>
