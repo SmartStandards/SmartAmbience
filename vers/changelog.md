@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* Added T4 Template for SmartStandards.Logging
+*(none)*
+
+
+
+## v 2.4.3
+released **2025-04-15**, including:
+ - Added T4 Template for SmartStandards.Logging
 
 
 
