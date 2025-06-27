@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* Fixed constellations when cContextAdaper for Asp.netCoreWebApi is used after Request-loop has finished (disposed Feature-Collection in HttpContext) and made it more Robust
+*(none)*
+
+
+
+## v 2.4.5
+released **2025-06-27**, including:
+ - Fixed constellations when cContextAdaper for Asp.netCoreWebApi is used after Request-loop has finished (disposed Feature-Collection in HttpContext) and made it more Robust
 
 
 

@@ -17,10 +17,10 @@
     <Product>SmartAmbience</Product>
     <Company>(public domain)</Company>
     <Copyright>SmartStandards</Copyright>
-    <Version>999.0.0</Version>
-    <AssemblyVersion>999.0.0.0</AssemblyVersion>
+    <Version>2.4.5</Version>
+    <AssemblyVersion>2.4.5</AssemblyVersion>
     <Authors>SmartStandards</Authors>
-    <FileVersion>999.0.0.0</FileVersion>
+    <FileVersion>2.4.5</FileVersion>
     <PackageTags>Ambience AsyncLocal Context Scopes</PackageTags>
     <PackageProjectUrl>https://github.com/SmartStandards/SmartAmbience</PackageProjectUrl>
     <RepositoryUrl>https://github.com/SmartStandards/SmartAmbience</RepositoryUrl>
