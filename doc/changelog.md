@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* Fix: Exception when accessing context.Features
+*(none)*
+
+
+
+## v 2.4.6
+released **2025-06-27**, including:
+ - Fix: Exception when accessing context.Features
 
 
 

@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.4.5",
-  "currentVersionWithSuffix": "2.4.5",
+  "currentVersion": "2.4.6",
+  "currentVersionWithSuffix": "2.4.6",
   "releaseType": "",
-  "previousVersion": "2.4.4",
+  "previousVersion": "2.4.5",
   "changeGrade": "fix",
   "currentMajor": 2,
   "currentMinor": 4,
-  "currentPatch": 5,
+  "currentPatch": 6,
   "versionDateInfo": "2025-06-27",
-  "versionTimeInfo": "08:45:41",
-  "versionNotes": "- Fixed constellations when cContextAdaper for Asp.netCoreWebApi is used after Request-loop has finished (disposed Feature-Collection in HttpContext) and made it more Robust\n"
+  "versionTimeInfo": "12:47:45",
+  "versionNotes": "- Fix: Exception when accessing context.Features\n"
 }
