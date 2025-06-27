@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +16,18 @@ namespace Microsoft.AspNetCore {
       public bool IsUsable {
         get {
           HttpContext context = this.CurrentHttpContext;
-          return (context != null && context.Features != null);
+          try {
+
+            //context.Features could throw ObjectDisposedException:
+            //https://github.com/dotnet/aspnetcore/blob/main/src/Http/Http/src/DefaultHttpContext.cs#L139
+            //but there is no way to check this first :-(
+            return (context != null && context.Features != null);
+
+          }
+          catch (ObjectDisposedException ex) {
+            this.CurrentHttpContext = null;
+            return false;
+          }
         }
       }
 
