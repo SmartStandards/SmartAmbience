@@ -14,6 +14,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowSideChannelAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\HasDataFlowBackChannelAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DistributedDataFlow\FlowingContractDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)System\Threading\NeverUsableContextAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbienceToAppDomainAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\Singleton'1.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\AmbientField.cs" />
@@ -22,8 +23,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)System\Threading\IAmbienceToSomeContextAdapter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)%28Internal%29\PriorityList.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)System\" />
   </ItemGroup>
 </Project>

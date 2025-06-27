@@ -263,6 +263,7 @@ namespace System.Threading {
           value = MagicValueForNull;
         }
 
+        //this will never be "True", if contextAdapter is not usable
         if ((this.ContextValueIsSealed == "True")) {
 
           // Ensure the context value is only not changed.
@@ -287,15 +288,23 @@ namespace System.Threading {
     }
 
     private void ContextAdapter_IsTerminating() {
+
       AmbientField.ContextAdapter.CurrentContextIsTerminating -= this.ContextAdapter_IsTerminating;
 
       if (this.OnTerminatingMethod != null) {
-        string dyingValue = AmbientField.ContextAdapter.TryGetCurrentValue(this.Name);
-        if (dyingValue != MagicValueForNull) {
-          dyingValue = null;
+        string dyingValue = null;
+
+        if (AmbientField.ContextAdapter.IsUsable) {
+          dyingValue = AmbientField.ContextAdapter.TryGetCurrentValue(this.Name);
+          if (dyingValue == MagicValueForNull) {
+            dyingValue = null;
+          }
         }
+
         this.OnTerminatingMethod.Invoke(dyingValue);
+
       }
+
     }
 
   }

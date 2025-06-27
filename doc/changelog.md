@@ -5,7 +5,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+* Fixed constellations when cContextAdaper for Asp.netCoreWebApi is used after Request-loop has finished (disposed Feature-Collection in HttpContext) and made it more Robust
 
 
 

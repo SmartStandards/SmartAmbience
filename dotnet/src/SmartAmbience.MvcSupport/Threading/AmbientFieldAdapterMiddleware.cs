@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,26 +13,39 @@ namespace Microsoft.AspNetCore {
 
       public bool IsUsable {
         get {
-          return (this.CurrentHttpContext != null);
+          HttpContext context = this.CurrentHttpContext;
+          return (context != null && context.Features != null);
         }
       }
 
       public void SetCurrentValue(string key, string value) {
-        var ctx = this.CurrentHttpContext;
-        if (ctx == null) {
+        HttpContext context = this.CurrentHttpContext;
+        if (context == null) {
           return;
         }
-        ctx.Items[key] = value;
+        try {
+          context.Items[key] = value;
+        }
+        catch (ObjectDisposedException ex) {
+          this.CurrentHttpContext = null;
+          return;
+        }
       }
 
       public string TryGetCurrentValue(string key) {
-        var ctx = this.CurrentHttpContext;
-        if (ctx == null) {
+        HttpContext context = this.CurrentHttpContext;
+        if (context == null) {
           return null;
         }
-        ctx.Items.TryGetValue(key, out var rawValue);
-        string value = rawValue?.ToString();
-        return value;
+        try {
+          context.Items.TryGetValue(key, out var rawValue);
+          string value = rawValue?.ToString();
+          return value;
+        }
+        catch (ObjectDisposedException ex) {
+          this.CurrentHttpContext = null;
+          return null;
+        }
       }
 
       public void RaiseTerminate() {
@@ -59,17 +73,17 @@ namespace Microsoft.AspNetCore {
       }
     }
 
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate _OnPassOnInnerRequestExecutor;
 
     public AmbientFieldAdapterMiddleware(RequestDelegate next) {
-      _next = next;
+      _OnPassOnInnerRequestExecutor = next;
     }
 
     public async Task Invoke(HttpContext context) {
       try {
         _ContextAdapter.CurrentHttpContext = context;
 
-        await _next.Invoke(context);
+        await _OnPassOnInnerRequestExecutor.Invoke(context);
 
       }
       finally {
@@ -79,6 +93,7 @@ namespace Microsoft.AspNetCore {
         _ContextAdapter.CurrentHttpContext = null;
       }
     }
+
   }
 
 }
