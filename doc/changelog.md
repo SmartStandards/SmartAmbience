@@ -5,7 +5,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+- SmartStandards.Logging.tt V 2.2.1
 
 
 
