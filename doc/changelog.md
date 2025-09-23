@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-- SmartStandards.Logging.tt V 2.2.1
+*(none)*
+
+
+
+## v 2.4.7
+released **2025-09-23**, including:
+ - SmartStandards.Logging.tt V 2.2.1
 
 
 
