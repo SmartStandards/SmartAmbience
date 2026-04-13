@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Http.Features;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+
+[assembly: AssemblyMetadata("SourceContext", "SmartAmbience")]
 
 namespace Microsoft.AspNetCore {
 

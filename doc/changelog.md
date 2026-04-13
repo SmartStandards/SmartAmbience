@@ -5,7 +5,7 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-*(none)*
+* moved shared instance - property for the SmartSingleton from outside into the class itself (more correct location)
 
 
 

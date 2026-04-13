@@ -177,6 +177,37 @@ namespace System.SmartSingleton {
       }
     }
 
+    private static Singleton<T> _Shared = null;
+    private static readonly object _SharedLock = new object();
+    public static Singleton<T> Shared {
+      get {
+        lock (_SharedLock) {
+          if (_Shared == null) {
+            _Shared = new Singleton<T>(()=> (T) Activator.CreateInstance(typeof(T)));
+          }
+          return _Shared;
+        }    
+      }
+    }
+
+    /// <summary>
+    /// WARNING: THIS WILL RESET THE CURRENT INSTANCE!
+    /// </summary>
+    /// <param name="factory"></param>
+    public static void SetSharedContainerFactory(Func<T> factory) {
+      Shared._Factory = factory;
+      Shared.DisposeCurrent();
+    }
+
+    /// <summary>
+    /// WARNING: THIS WILL RESET THE CURRENT INSTANCE!
+    /// </summary>
+    /// <param name="discriminatorGetter">Could be a function that retrieves a binding-identifier from an AmbientField-Value</param>
+    public static void ScopeSharedContainerToDiscriminatorGetter(Func<string> discriminatorGetter) {
+      Shared._ScopeDiscriminatorGetter = discriminatorGetter;
+      Shared.DisposeCurrent();
+    }
+
   }
 
 }
