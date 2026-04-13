@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.4.7",
-  "currentVersionWithSuffix": "2.4.7",
+  "currentVersion": "2.4.8",
+  "currentVersionWithSuffix": "2.4.8",
   "releaseType": "",
-  "previousVersion": "2.4.6",
+  "previousVersion": "2.4.7",
   "changeGrade": "fix",
   "currentMajor": 2,
   "currentMinor": 4,
-  "currentPatch": 7,
-  "versionDateInfo": "2025-09-23",
-  "versionTimeInfo": "07:39:04",
-  "versionNotes": "- SmartStandards.Logging.tt V 2.2.1\n"
+  "currentPatch": 8,
+  "versionDateInfo": "2026-04-13",
+  "versionTimeInfo": "05:51:42",
+  "versionNotes": "- moved shared instance - property for the SmartSingleton from outside into the class itself (more correct location)\n"
 }

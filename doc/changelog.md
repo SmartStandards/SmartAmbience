@@ -5,7 +5,13 @@ This files contains a version history including all changes relevant for semanti
 
 ## Upcoming Changes
 
-* moved shared instance - property for the SmartSingleton from outside into the class itself (more correct location)
+*(none)*
+
+
+
+## v 2.4.8
+released **2026-04-13**, including:
+ - moved shared instance - property for the SmartSingleton from outside into the class itself (more correct location)
 
 
 
