@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>SmartAmbience.MvcSupport</AssemblyName>
     <RootNamespace>System</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -23,16 +23,16 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.MvcSupport.xml</DocumentationFile>
-    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
+    <DocumentationFile>..\..\dist\bin-net10.0\SmartAmbience.MvcSupport.xml</DocumentationFile>
+    <OutputPath>..\..\dist\bin-net10.0\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>TRACE;DEBUG;NET5</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\dist\bin-net6.0\</OutputPath>
-    <DocumentationFile>..\..\dist\bin-net6.0\SmartAmbience.MvcSupport.xml</DocumentationFile>
+    <OutputPath>..\..\dist\bin-net10.0\</OutputPath>
+    <DocumentationFile>..\..\dist\bin-net10.0\SmartAmbience.MvcSupport.xml</DocumentationFile>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <NoWarn>1701;1702;1591</NoWarn>
     <DefineConstants>TRACE;NET5</DefineConstants>
@@ -41,13 +41,16 @@
   <Import Project="..\SmartAmbience.MvcSupport\SmartAmbience.MvcSupport.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    
+    <!-- IMPORTANT: this package is made for the ASP.NET Core ecosystem ONLY -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+	
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj">
+    <ProjectReference Include="..\SmartAmbience.net10.0\SmartAmbience.net10.0.csproj">
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

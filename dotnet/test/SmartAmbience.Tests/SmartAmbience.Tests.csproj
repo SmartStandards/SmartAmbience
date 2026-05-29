@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsTestProject>true</IsTestProject>
     <RootNamespace>System</RootNamespace>
     <ImplicitUsings>disable</ImplicitUsings>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\SmartAmbience.net6.0\SmartAmbience.net6.0.csproj" />
+    <ProjectReference Include="..\..\src\SmartAmbience.net10.0\SmartAmbience.net10.0.csproj" />
   </ItemGroup>
 
 </Project>
