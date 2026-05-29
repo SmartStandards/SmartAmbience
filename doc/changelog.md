@@ -9,6 +9,12 @@ This files contains a version history including all changes relevant for semanti
 
 
 
+## v 2.5.1
+released **2026-05-29**, including:
+ - new revision without significant changes
+
+
+
 ## v 2.5.0
 released **2026-05-29**, including:
  - **new Feature**: Moved targets from .net 6/8 to 8/10

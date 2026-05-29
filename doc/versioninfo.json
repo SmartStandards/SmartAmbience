@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.5.0",
-  "currentVersionWithSuffix": "2.5.0",
+  "currentVersion": "2.5.1",
+  "currentVersionWithSuffix": "2.5.1",
   "releaseType": "",
-  "previousVersion": "2.4.8",
-  "changeGrade": "minor",
+  "previousVersion": "2.5.0",
+  "changeGrade": "fix",
   "currentMajor": 2,
   "currentMinor": 5,
-  "currentPatch": 0,
+  "currentPatch": 1,
   "versionDateInfo": "2026-05-29",
-  "versionTimeInfo": "05:08:36",
-  "versionNotes": "- new Feature: Moved targets from .net 6/8 to 8/10\n"
+  "versionTimeInfo": "07:26:20",
+  "versionNotes": "- new revision without significant changes\n"
 }
