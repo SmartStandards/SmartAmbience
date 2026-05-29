@@ -23,8 +23,6 @@
       </group>
       <group targetFramework="net10.0">
         <dependency id="SmartAmbience" version="[2.4.8]" />
-        <dependency id="Microsoft.AspNetCore.Http" version="[2.2.2,2.999]" />
-        <dependency id="Microsoft.AspNetCore.Mvc.Core" version="[2.2.2,2.999]" />
         <dependency id="Newtonsoft.Json" version="[13.0.4,13.999]" />
       </group>      
     </dependencies>
