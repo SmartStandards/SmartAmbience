@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.4.8",
-  "currentVersionWithSuffix": "2.4.8",
+  "currentVersion": "2.5.0",
+  "currentVersionWithSuffix": "2.5.0",
   "releaseType": "",
-  "previousVersion": "2.4.7",
-  "changeGrade": "fix",
+  "previousVersion": "2.4.8",
+  "changeGrade": "minor",
   "currentMajor": 2,
-  "currentMinor": 4,
-  "currentPatch": 8,
-  "versionDateInfo": "2026-04-13",
-  "versionTimeInfo": "05:51:42",
-  "versionNotes": "- moved shared instance - property for the SmartSingleton from outside into the class itself (more correct location)\n"
+  "currentMinor": 5,
+  "currentPatch": 0,
+  "versionDateInfo": "2026-05-29",
+  "versionTimeInfo": "05:08:36",
+  "versionNotes": "- new Feature: Moved targets from .net 6/8 to 8/10\n"
 }
