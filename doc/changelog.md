@@ -9,6 +9,12 @@ This files contains a version history including all changes relevant for semanti
 
 
 
+## v 2.6.0
+released **2026-09-07**, including:
+ - **new Feature**: added 'AmbienceToDummyContextAdapter'
+
+
+
 ## v 2.5.1
 released **2026-05-29**, including:
  - new revision without significant changes

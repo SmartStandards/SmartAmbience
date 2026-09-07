@@ -1,13 +1,13 @@
 {
-  "currentVersion": "2.5.1",
-  "currentVersionWithSuffix": "2.5.1",
+  "currentVersionWithSuffix": "2.6.0",
   "releaseType": "",
-  "previousVersion": "2.5.0",
-  "changeGrade": "fix",
+  "currentVersion": "2.6.0",
   "currentMajor": 2,
-  "currentMinor": 5,
-  "currentPatch": 1,
-  "versionDateInfo": "2026-05-29",
-  "versionTimeInfo": "07:26:20",
-  "versionNotes": "- new revision without significant changes\n"
+  "currentMinor": 6,
+  "currentFix": 0,
+  "previousVersion": "0.0.0",
+  "changeGrade": "initial",
+  "versionTimeInfo": "00:00:00",
+  "versionDateInfo": "1900-01-01",
+  "versionNotes": ""
 }
