@@ -9,6 +9,13 @@ This files contains a version history including all changes relevant for semanti
 
 
 
+## v 3.0.0
+released **2026-09-07**, including:
+ - Breaking Change: ValueChangingGuard instead of SealContextValue()
+ - Merge branch 'master' of https://github.com/SmartStandards/SmartAmbience
+
+
+
 ## v 2.6.0
 released **2026-09-07**, including:
  - **new Feature**: added 'AmbienceToDummyContextAdapter'
