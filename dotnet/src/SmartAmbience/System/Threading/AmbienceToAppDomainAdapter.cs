@@ -24,6 +24,10 @@ namespace System.Threading {
       return value;
     }
 
+    public static void ClearAllValues() {
+      _RootValuesByKey.Clear();
+    }
+
   }
 
 }
