@@ -9,6 +9,12 @@ namespace System.Threading {
   [DebuggerDisplay("{Name}: {Value}")]
   public partial class AmbientField {
 
+    /// <summary>
+    ///   A delegate that can be used to guard the value change of an AmbientField
+    ///   by throwing an exception if the change is not allowed.
+    /// </summary>
+    public delegate void ValueChangingGuardDelegate(string currentValue, string newValue);
+
     private static IAmbienceToSomeContextAdapter _ContextAdapter;
 
     private static Dictionary<string, AmbientField> _ExposedInstances = new Dictionary<string, AmbientField>();
@@ -16,6 +22,8 @@ namespace System.Threading {
     private bool _ContextAdapterEventHandlersAdded;
 
     private string _LongLivingValue;
+
+    private ValueChangingGuardDelegate _OnValueChangingGuard = null;
 
     ///when we get null to be stored as explicit payload
     internal const string MagicValueForNull = "~NULL~";
@@ -35,7 +43,11 @@ namespace System.Threading {
     ///   Tags the AmbientField as "exposed". It will be registered in the ExposedInstances catalog.
     ///   The intended purpose is flowing: Exposed AmbientFields can be collected by a flowing engine (to be flowed accross web service hops).
     /// </param>
-    public AmbientField(string name, bool exposedInstance = false) {
+    /// <param name="onValueChangingGuard">
+    ///   A delegate that can be used to guard the value change of an AmbientField
+    ///   by throwing an exception if the change is not allowed.
+    /// </param>
+    public AmbientField(string name, bool exposedInstance = false, ValueChangingGuardDelegate onValueChangingGuard = null) {
       this.Name = name;
 
       if (!exposedInstance) {
@@ -55,6 +67,9 @@ namespace System.Threading {
 
           if ((preStagedValue != null)) _InnerAsyncLocal.Value = preStagedValue;
         }
+
+        _OnValueChangingGuard = onValueChangingGuard;
+
       }
     }
 
@@ -113,17 +128,6 @@ namespace System.Threading {
       }
     }
 
-    public void SealContextValue() {
-      this.AssertLongLivingValueIsNotUsed();
-
-      string contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
-
-      if (contextValue == null) {
-        throw new InvalidOperationException($"Context value for \"{this.Key}\" cannot be sealed, because it does not exist!");
-      }
-
-      _ContextAdapter.SetCurrentValue(this.Key + ".IsSealed", "True");
-    }
 
     /// <summary>
     ///  The adapter for storing the value in an external fallback context depending upon the hosting technology.
@@ -149,28 +153,6 @@ namespace System.Threading {
       }
     }
 
-    /// <returns>
-    ///  (ContextAdapterIsNull)
-    ///  (ContextAdapterIsNotUsable)
-    ///  (NotPresent) - if the ....IsSealed key/value is not present in the _ContextAdapter (= SealContextValue() was never called for that current context)
-    ///  True - It's sealed.
-    /// </returns>
-    public string ContextValueIsSealed {
-      get {
-        if (_ContextAdapter == null) {
-          return "(ContextAdapterIsNull)";
-        }
-        if (!_ContextAdapter.IsUsable) {
-          return "(ContextAdapterIsNotUsable)";
-        }
-        string value = _ContextAdapter.TryGetCurrentValue(this.Key + ".IsSealed");
-
-        if (value == null) {
-          return "(NotPresent)";
-        }
-        return value;
-      }
-    }
 
     public static IDictionary<string, AmbientField> ExposedInstances {
       get {
@@ -263,16 +245,9 @@ namespace System.Threading {
           value = MagicValueForNull;
         }
 
-        //this will never be "True", if contextAdapter is not usable
-        if ((this.ContextValueIsSealed == "True")) {
-
-          // Ensure the context value is only not changed.
-
-          string contextValue = _ContextAdapter.TryGetCurrentValue(this.Key);
-
-          if ((!string.IsNullOrEmpty(contextValue) && !contextValue.Equals(value)))
-            throw new InvalidOperationException($"Sealed context value for \"{this.Key}\" has already been set to \"{contextValue}\" and cannot be changed to \"{value}\"!"
-          );
+        string currentValue = this.Value;
+        if (_OnValueChangingGuard != null && value != currentValue) {
+          _OnValueChangingGuard.Invoke(currentValue, value);
         }
 
         // Actually store the value

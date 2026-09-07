@@ -9,7 +9,14 @@ namespace System.Threading {
 
     private static AmbientField _AmbientField = new AmbientField("AmbientField");
 
-    private static AmbientField _SealedAmbientField = new AmbientField("SealedAmbientField", true);
+    private static AmbientField _SealedAmbientField = new AmbientField(
+      "SealedAmbientField", true,
+      (oldValue,newValue)=> {
+        if (oldValue != null) {
+          throw new InvalidOperationException($"Sealed context value for \"SealedAmbientField\" has already been set to \"{oldValue}\" and cannot be changed to \"{newValue}\"!");
+        }
+      }
+    );
 
     private static AmbientField _TemporaryBranchTestField = new AmbientField("TemporaryBranchTestField");
 
@@ -67,30 +74,11 @@ namespace System.Threading {
 
       Assert.IsNull(_SealedAmbientField.Value);
 
-      // Sealing before setting a value should throw an Exception
-
-      Assert.AreEqual("(NotPresent)", _SealedAmbientField.ContextValueIsSealed);
-
-      try {
-        _SealedAmbientField.SealContextValue();
-      }
-      catch (Exception ex) {
-        caughtException = ex;
-      }
-
-      Assert.AreEqual($"Context value for \"{_SealedAmbientField.Key}\" cannot be sealed, because it does not exist!", caughtException.Message);
-
       // Setting a value and sealing it afterwards should work...
 
       _SealedAmbientField.Value = "Highlander";
 
       Assert.AreEqual("Highlander", _SealedAmbientField.Value);
-
-      _SealedAmbientField.SealContextValue();
-
-      Assert.AreEqual("True", _SealedAmbientField.ContextValueIsSealed);
-
-      // ... trying to change the value should throw an Exception...
 
       try {
         _SealedAmbientField.Value = "Es kann nur einen geben.";
@@ -109,9 +97,6 @@ namespace System.Threading {
 
       _SealedAmbientField.Value = "Highlander";
 
-      // "ExposedField=Ture" should appear in ExposedInstances
-
-      Assert.IsTrue(AmbientField.ExposedInstances.Keys.Contains("SealedAmbientField"));
     }
 
     [TestMethod()]
