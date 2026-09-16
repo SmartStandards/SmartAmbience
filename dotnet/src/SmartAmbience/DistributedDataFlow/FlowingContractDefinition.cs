@@ -26,6 +26,8 @@ namespace DistributedDataFlow {
     private bool _IncludeAllEndpoints = false;
     private bool _IncludeAnyEndpoints = false;
 
+    private Action<IDictionary<string, string>> _GuardAction = null;
+
     private List<string> _IncludedAmbientFieldNames = new List<string>();
     private List<string> _ExcludedAmbientFieldNames = new List<string>();
     private List<string> _IncludedCustomEndpointNames = new List<string>();
@@ -41,6 +43,20 @@ namespace DistributedDataFlow {
       this.ImmutableGuard();
       _IncludeAnyAmbientFields = true;
       _IncludedAmbientFieldNames.AddRange(ambientFieldNames);
+    }
+
+    /// <summary>
+    /// Allows to define a guard action that will be executed
+    ///  A) after capturing ambient-field values and  B) before restoring them.
+    ///  This allows to implement a guard for the ambient-field values that are flowing through 
+    ///  the distributed data-flow in order to throw an exception if some values are missing or not valid.
+    ///  And (Even though it is not recommended in a guard) it would even be possible to set low-level
+    ///  defaults for missing values directly here.
+    /// </summary>
+    /// <param name="guardAction"></param>
+    public void UseAmbientFieldGuard(Action<IDictionary<string,string>> guardAction) {
+      this.ImmutableGuard();
+      _GuardAction = guardAction;
     }
 
     public void IncludeAllCustomEndpoints() {
@@ -109,6 +125,12 @@ namespace DistributedDataFlow {
         return false;
       }
       return !(_ExcludedAmbientFieldNames.Contains(ambientFieldName));
+    }
+
+    internal void AssertAmbientFieldValues(IDictionary<string, string> values) {
+      if (_GuardAction != null) {
+        _GuardAction(values);
+      }
     }
 
     #endregion

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logging.SmartStandards.CopyForSystem;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -26,13 +27,18 @@ namespace DistributedDataFlow {
         return;
       }
 
-      IEnumerable<AmbientField> includedInstances = AmbientField.ExposedInstances.Values.Where(
-        (f)=> contract.IsAmbientFieldIncluded(f.Name)
-      );
+      Dictionary<string,string> flowingEntries = new Dictionary<string,string>();
+      foreach (AmbientField exposedInstance in AmbientField.ExposedInstances.Values) {
+        if (contract.IsAmbientFieldIncluded(exposedInstance.Name)) {
+          flowingEntries[exposedInstance.Name] = exposedInstance.Value;
+        }
+      }
 
-      foreach (AmbientField exposedInstance in includedInstances) {
-        capture(exposedInstance.Name, exposedInstance.Value);
-      };
+      contract.AssertAmbientFieldValues(flowingEntries);
+
+      foreach (KeyValuePair<string,string> flowingEntry in flowingEntries) {
+        capture.Invoke(flowingEntry.Key, flowingEntry.Value);
+      }
 
     }
 
@@ -42,28 +48,35 @@ namespace DistributedDataFlow {
         return;
       }
 
+      Dictionary<string, string> flowingEntries = new Dictionary<string, string>();
       foreach (KeyValuePair<string, string> entryToRestore in sourceToRestore) {
         if (contract.IsAmbientFieldIncluded(entryToRestore.Key)) {
-
-          bool restored = false;
-
-          foreach (AmbientField exposedInstance in AmbientField.ExposedInstances.Values) {
-            if(exposedInstance.Name.Equals(entryToRestore.Key, StringComparison.CurrentCultureIgnoreCase)) {
-              Debug.WriteLine($"{nameof(AmbienceHub)} setting value '{entryToRestore.Value}' for AmbientField '{entryToRestore.Key}'");
-              exposedInstance.Value = entryToRestore.Value; 
-              restored = true;
-              break;  
-            }
-          }
-
-          if (!restored) {
-            //prestage value
-            Debug.WriteLine($"{nameof(AmbienceHub)} staging value '{entryToRestore.Value}' for AmbientField '{entryToRestore.Key}'");
-            AmbientField.InjectPreStagedValue(entryToRestore.Key, entryToRestore.Value);
-          }
-
+          flowingEntries[entryToRestore.Key] = entryToRestore.Value;
         }
-      };
+      }
+
+      contract.AssertAmbientFieldValues(flowingEntries);
+
+      foreach (KeyValuePair<string, string> flowingEntry in flowingEntries) {
+
+        bool restored = false;
+
+        foreach (AmbientField exposedInstance in AmbientField.ExposedInstances.Values) {
+          if(exposedInstance.Name.Equals(flowingEntry.Key, StringComparison.CurrentCultureIgnoreCase)) {
+            //DevLogger.LogTrace($"{nameof(AmbienceHub)} setting value '{flowingEntry.Value}' for AmbientField '{flowingEntry.Key}'");
+            exposedInstance.Value = flowingEntry.Value; 
+            restored = true;
+            break;  
+          }
+        }
+
+        //prestage value (because the AmbientField instance may not yet be created in this context)
+        if (!restored) {
+          //DevLogger.LogTrace($"{nameof(AmbienceHub)} staging value '{flowingEntry.Value}' for AmbientField '{flowingEntry.Key}'");
+          AmbientField.InjectPreStagedValue(flowingEntry.Key, flowingEntry.Value);
+        }
+
+      }
 
     }
 
