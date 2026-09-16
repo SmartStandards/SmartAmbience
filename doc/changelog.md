@@ -9,6 +9,13 @@ This files contains a version history including all changes relevant for semanti
 
 
 
+## v 3.2.0
+released **2026-09-16**, including:
+ - **new Feature**: added 'UseAmbientFieldGuard' for flowing-contracts
+ - Added direction to new Guard
+
+
+
 ## v 3.1.0
 released **2026-09-16**, including:
  - **new Feature**: added 'UseAmbientFieldGuard' for flowing-contracts
