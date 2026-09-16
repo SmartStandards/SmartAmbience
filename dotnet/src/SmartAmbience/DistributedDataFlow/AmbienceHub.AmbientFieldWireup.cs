@@ -34,7 +34,7 @@ namespace DistributedDataFlow {
         }
       }
 
-      contract.AssertAmbientFieldValues(flowingEntries);
+      contract.AssertAmbientFieldValues(flowingEntries, false);
 
       foreach (KeyValuePair<string,string> flowingEntry in flowingEntries) {
         capture.Invoke(flowingEntry.Key, flowingEntry.Value);
@@ -55,7 +55,7 @@ namespace DistributedDataFlow {
         }
       }
 
-      contract.AssertAmbientFieldValues(flowingEntries);
+      contract.AssertAmbientFieldValues(flowingEntries, true);
 
       foreach (KeyValuePair<string, string> flowingEntry in flowingEntries) {
 

@@ -26,7 +26,16 @@ namespace DistributedDataFlow {
     private bool _IncludeAllEndpoints = false;
     private bool _IncludeAnyEndpoints = false;
 
-    private Action<IDictionary<string, string>> _GuardAction = null;
+    /// <summary>
+    ///  (IDictionary&lt;string, string&gt; ambientFieldValues, bool directionIsIncoming) => { ... }
+    /// </summary>
+    /// <param name="ambientFieldValues"></param>
+    /// <param name="directionIsIncoming"></param>
+    public delegate void AmbientFieldGuardDelegate(
+      IDictionary<string, string> ambientFieldValues, bool directionIsIncoming
+    );
+
+    private AmbientFieldGuardDelegate _GuardAction = null;
 
     private List<string> _IncludedAmbientFieldNames = new List<string>();
     private List<string> _ExcludedAmbientFieldNames = new List<string>();
@@ -53,8 +62,10 @@ namespace DistributedDataFlow {
     ///  And (Even though it is not recommended in a guard) it would even be possible to set low-level
     ///  defaults for missing values directly here.
     /// </summary>
-    /// <param name="guardAction"></param>
-    public void UseAmbientFieldGuard(Action<IDictionary<string,string>> guardAction) {
+    /// <param name="guardAction">
+    ///  (IDictionary&lt;string, string&gt; ambientFieldValues, bool directionIsIncoming) => { ... }
+    /// </param>
+    public void UseAmbientFieldGuard(AmbientFieldGuardDelegate guardAction) {
       this.ImmutableGuard();
       _GuardAction = guardAction;
     }
@@ -127,9 +138,9 @@ namespace DistributedDataFlow {
       return !(_ExcludedAmbientFieldNames.Contains(ambientFieldName));
     }
 
-    internal void AssertAmbientFieldValues(IDictionary<string, string> values) {
+    internal void AssertAmbientFieldValues(IDictionary<string, string> ambientFieldValues, bool directionIsIncoming) {
       if (_GuardAction != null) {
-        _GuardAction(values);
+        _GuardAction(ambientFieldValues, directionIsIncoming);
       }
     }
 
