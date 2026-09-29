@@ -42,9 +42,12 @@
   <Import Project="..\SmartAmbience.MvcSupport\SmartAmbience.MvcSupport.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+
+    <!-- IMPORTANT: this package is made for the ASP.NET Core ecosystem ONLY -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+
   </ItemGroup>
 
   <ItemGroup>
