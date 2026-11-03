@@ -9,6 +9,12 @@ This files contains a version history including all changes relevant for semanti
 
 
 
+## v 3.2.2
+released **2026-11-03**, including:
+ - Fix: _LongLivingValue wasnt returned when currentContext adapter was usable but delivered null
+
+
+
 ## v 3.2.1
 released **2026-09-29**, including:
  - removed version constriant
