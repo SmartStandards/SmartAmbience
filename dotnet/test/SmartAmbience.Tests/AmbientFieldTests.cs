@@ -180,6 +180,100 @@ namespace System.Threading {
 
     }
 
+    /// <summary>
+    ///   Ensures that the long living value is returned, when the AsyncLocal value was lost
+    ///   and the (usable) context adapter does not contain a value for the field.
+    /// </summary>
+    [TestMethod()]
+    public void AmbientField_ContextUsableButContainsNull_ShouldReturnLongLivingValue() {
+
+      IAmbienceToSomeContextAdapter rescuedContextAdapter = AmbientField.TestApi.DirectContextAdapter;
+      SwitchableTestContextAdapter switchableAdapter = new SwitchableTestContextAdapter();
+
+      try {
+        AmbientField.TestApi.DirectContextAdapter = switchableAdapter;
+
+        AmbientField longLivingTestField = new AmbientField("LongLivingTestField");
+
+        // While the context is not usable, the value goes into the long living value store...
+
+        switchableAdapter.IsUsable = false;
+        longLivingTestField.Value = "LongLivingValue";
+
+        // ...afterwards the context becomes usable, but does not contain any value for the field
+
+        switchableAdapter.IsUsable = true;
+
+        // Read the value from a thread without flowing ExecutionContext, so that the AsyncLocal value is lost
+
+        string valueFromThreadWithoutAsyncLocal = null;
+        Thread readerThread;
+
+        AsyncFlowControl flowControl = ExecutionContext.SuppressFlow();
+        try {
+          readerThread = new Thread(() => {
+            valueFromThreadWithoutAsyncLocal = longLivingTestField.Value;
+          });
+          readerThread.Start();
+        } finally {
+          flowControl.Undo();
+        }
+
+        readerThread.Join();
+
+        Assert.AreEqual("LongLivingValue", valueFromThreadWithoutAsyncLocal);
+
+      } finally {
+        AmbientField.TestApi.DirectContextAdapter = rescuedContextAdapter;
+      }
+
+    }
+
+    /// <summary>
+    ///   Context adapter for tests, whose usability can be switched and which stores values in memory.
+    /// </summary>
+    private class SwitchableTestContextAdapter : IAmbienceToSomeContextAdapter {
+
+      private bool _IsUsable;
+
+      private Collections.Concurrent.ConcurrentDictionary<string, string> _ValuesByKey = new Collections.Concurrent.ConcurrentDictionary<string, string>();
+
+      public bool IsUsable {
+        get {
+          return _IsUsable;
+        }
+        set {
+          _IsUsable = value;
+        }
+      }
+
+      public event CurrentContextIsTerminatingEventHandler CurrentContextIsTerminating {
+        add {
+        }
+        remove {
+        }
+      }
+
+      /// <summary>
+      ///   Stores the value for the given key.
+      /// </summary>
+      public void SetCurrentValue(string key, string value) {
+        _ValuesByKey[key] = value;
+      }
+
+      /// <summary>
+      ///   Returns the value for the given key or null, if no value exists.
+      /// </summary>
+      public string TryGetCurrentValue(string key) {
+
+        string value = null;
+        _ValuesByKey.TryGetValue(key, out value);
+
+        return value;
+      }
+
+    }
+
   }
 
 }

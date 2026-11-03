@@ -212,7 +212,7 @@ namespace System.Threading {
             return null;
           }
           return asyncLocalValue;
-        } else if (_ContextAdapter.IsUsable) {
+        } else if (_ContextAdapter.IsUsable && contextValue != null) {
 
           // Der AsyncLocal-Context ist zwischenzeitlich verloren gegangen, wir müssen ihn wiederherstellen...
 
